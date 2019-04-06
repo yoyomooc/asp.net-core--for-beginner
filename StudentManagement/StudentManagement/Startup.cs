@@ -35,8 +35,6 @@ namespace StudentManagement
                 app.UseDeveloperExceptionPage();
             }
 
-
-
             app.Run(async (context) =>
             {
                 //进程名
