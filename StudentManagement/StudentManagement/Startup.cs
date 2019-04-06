@@ -26,6 +26,9 @@ namespace StudentManagement
             {
                 app.UseDeveloperExceptionPage();
             }
+
+
+
             app.Run(async (context) =>
             {
                 var processName = System.Diagnostics.Process.GetCurrentProcess().ProcessName;
