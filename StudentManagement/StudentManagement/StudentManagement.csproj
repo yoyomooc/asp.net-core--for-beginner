@@ -4,6 +4,7 @@
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <!--<AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>-->
   <AspNetCoreHostingModel>OutOfProcess</AspNetCoreHostingModel>
+  <UserSecretsId>770b5819-7bee-4a2d-b4e5-cc25ee9e910a</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
