@@ -34,33 +34,36 @@ namespace StudentManagement
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+
             }
 
-            app.Use(async (context,next) =>
-            {
-                context.Response.ContentType = "text/plain;charset=utf-8";
 
-                logger.LogInformation("MW1: 传入请求");             
-                await next();
-                logger.LogInformation("MW1: 传出响应");
 
-            });
-            app.Use(async (context, next) =>
-            {
-                context.Response.ContentType = "text/plain;charset=utf-8";
 
-                logger.LogInformation("MW2: 传入请求");
-                await next();
-                logger.LogInformation("MW2: 传出响应");
 
-            });
+
+
+            //DefaultFilesOptions defaultFilesOptions = new DefaultFilesOptions();
+            //defaultFilesOptions.DefaultFileNames.Clear();
+            //defaultFilesOptions.DefaultFileNames.Add("52abp.html");
+
+            FileServerOptions fileServerOptions = new FileServerOptions();
+            fileServerOptions.DefaultFilesOptions.DefaultFileNames.Clear();
+            fileServerOptions.DefaultFilesOptions.DefaultFileNames.Add("52abp.html");
+
+
+            app.UseFileServer(fileServerOptions);
+
+            //index.html  index.htm 默认  default.html default.htm 
+            
+          
 
             app.Run(async (context) =>
             {
 
-                await context.Response.WriteAsync("MW3:处理请求，并生成响应");
+                await context.Response.WriteAsync("Hello World");
 
-                logger.LogInformation("MW3:处理请求，并生成响应");
+           
 
             });
         }
