@@ -29,41 +29,19 @@ namespace StudentManagement
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env,ILogger<Startup> logger)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            //如果环境是Development，调用 Developer Exception Page 
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-
-            }
-
-
-
-
-
-
-
-            //DefaultFilesOptions defaultFilesOptions = new DefaultFilesOptions();
-            //defaultFilesOptions.DefaultFileNames.Clear();
-            //defaultFilesOptions.DefaultFileNames.Add("52abp.html");
-
-            FileServerOptions fileServerOptions = new FileServerOptions();
-            fileServerOptions.DefaultFilesOptions.DefaultFileNames.Clear();
-            fileServerOptions.DefaultFilesOptions.DefaultFileNames.Add("52abp.html");
-
-
-            app.UseFileServer(fileServerOptions);
-
-            //index.html  index.htm 默认  default.html default.htm 
+            }    
             
-          
-
+            app.UseStaticFiles();
+      
             app.Run(async (context) =>
             {
-
-                await context.Response.WriteAsync("Hello World");
-
-           
+                await context.Response.WriteAsync("Hosting Environment:" +env.EnvironmentName);          
 
             });
         }

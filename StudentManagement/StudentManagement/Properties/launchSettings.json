@@ -13,6 +13,7 @@
       "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
+        // "ASPNETCORE_ENVIRONMENT": "Staging",
         "MyKey": "appsetting.launchSetting.json MyKey "
       },
     
