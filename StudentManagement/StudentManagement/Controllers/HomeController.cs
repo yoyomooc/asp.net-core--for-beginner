@@ -29,6 +29,7 @@ namespace StudentManagement.Controllers
         {
             Student model = _studentRepository.GetStudent(1);
             return View(model);
+
         }
 
 
