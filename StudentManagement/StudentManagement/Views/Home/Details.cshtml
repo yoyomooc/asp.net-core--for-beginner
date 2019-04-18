@@ -1,7 +1,22 @@
-﻿
-@{
-    ViewData["Title"] = "Details";
-}
+﻿@model StudentManagement.VIewModels.HomeDetailsViewModel
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+</head>
+<body>
 
-<h1>Details</h1>
+    
+    <h3>@Model.PageTitle</h3>
 
+    <div>
+        姓名 : @Model.Student.Name
+    </div>
+    <div>
+        邮箱 : @Model.Student.Email
+    </div>
+    <div>
+        班级名称 : @Model.Student.ClassName
+    </div>
+
+</body>
+</html>

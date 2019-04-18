@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using StudentManagement.Models;
+using StudentManagement.VIewModels;
 
 namespace StudentManagement.Controllers
 {
@@ -18,17 +19,28 @@ namespace StudentManagement.Controllers
                                  
         }
 
-        public string Index()
-        {            //返回学生的名字
-            return _studentRepository.GetStudent(1).Name;                       
+        public IActionResult Index()
+        {
+         IEnumerable<Student> students = _studentRepository.GetAllStudents();
+
+
+            return View(students);      
             
         }
 
 
         public IActionResult Details()
         {
-            Student model = _studentRepository.GetStudent(1);
-            return View(model);
+            
+
+            //实例化HomeDetailsViewModel并存储Student详细信息和PageTitle
+            HomeDetailsViewModel homeDetailsViewModel = new HomeDetailsViewModel()
+            {
+                Student = _studentRepository.GetStudent(1),
+                PageTitle = "学生详细信息"
+            };
+
+            return View(homeDetailsViewModel);
 
         }
 
