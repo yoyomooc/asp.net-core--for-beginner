@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using StudentManagement.Models;
 
 namespace StudentManagement
 {
@@ -26,11 +27,8 @@ namespace StudentManagement
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc();
-
-            //mvc core 只包含了 核心的MVC功能。
-            //MVC 包含了依赖于MVC Core 以及相关的第三方常用的服务和方法。
-
+            services.AddMvc().AddXmlSerializerFormatters();
+            services.AddSingleton<IStudentRepository, MockStudentRepository>();
 
         }
 
@@ -41,12 +39,9 @@ namespace StudentManagement
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-            }    
-            
+            }                
             app.UseStaticFiles();
-
             app.UseMvcWithDefaultRoute();
-
             app.Run(async (context) =>
             {
                 await context.Response.WriteAsync("Hello World");          
