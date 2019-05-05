@@ -1,11 +1,9 @@
 ﻿@model StudentManagement.VIewModels.HomeDetailsViewModel
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-    <title></title>
-</head>
-<body>
+@{ 
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "学生详情页";
 
-    
+}    
     <h3>@Model.PageTitle</h3>
 
     <div>
@@ -18,5 +16,4 @@
         班级名称 : @Model.Student.ClassName
     </div>
 
-</body>
-</html>
+

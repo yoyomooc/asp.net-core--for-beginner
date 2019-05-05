@@ -1,10 +1,9 @@
 ﻿@model IEnumerable<StudentManagement.Models.Student>
-<!DOCTYPE html>
-<html>
-<head>
-    <title>学生页面列表</title>
-</head>
-<body>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "学生列表页面";
+}
+ 
 
     <table>
         <thead>
@@ -18,23 +17,22 @@
         <tbody>
             @foreach (var student in Model)
             {
-            <tr>
-                <td>
-                    @student.Id
-                </td>
-                <td>
-                    @student.Name
-                </td>
-                <td>
-                    @student.Email
-                </td>
-                <td>
-                    @student.ClassName
-                </td>
-            </tr>
+                <tr>
+                    <td>
+                        @student.Id
+                    </td>
+                    <td>
+                        @student.Name
+                    </td>
+                    <td>
+                        @student.Email
+                    </td>
+                    <td>
+                        @student.ClassName
+                    </td>
+                </tr>
             }
         </tbody>
     </table>
 
-</body>
-</html>
+ 
