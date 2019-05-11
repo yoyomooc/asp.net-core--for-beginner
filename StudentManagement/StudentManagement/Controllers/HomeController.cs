@@ -5,6 +5,8 @@ using System.Collections.Generic;
 
 namespace StudentManagement.Controllers
 {
+
+    
     public class HomeController : Controller
     {
         private readonly IStudentRepository _studentRepository;
@@ -16,29 +18,27 @@ namespace StudentManagement.Controllers
                                  
         }
 
+
+      
         public IActionResult Index()
         {
-         IEnumerable<Student> students = _studentRepository.GetAllStudents();
-
+         IEnumerable<Student> students = _studentRepository.GetAllStudents(); 
 
             return View(students);      
             
         }
 
-
-        public IActionResult Details()
+       
+        public IActionResult Details(int? id)
         {
             
-
             //实例化HomeDetailsViewModel并存储Student详细信息和PageTitle
             HomeDetailsViewModel homeDetailsViewModel = new HomeDetailsViewModel()
             {
-                Student = _studentRepository.GetStudent(1),
+                Student = _studentRepository.GetStudent(id??1),
                 PageTitle = "学生详细信息"
             };
-
             return View(homeDetailsViewModel);
-
         }
 
 
