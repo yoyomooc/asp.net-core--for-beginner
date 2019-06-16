@@ -35,5 +35,9 @@ namespace StudentManagement.Models
            
         }
 
+        public Student GetStudent(int id)
+        {
+            return    _studentList.FirstOrDefault(a => a.Id == id);
+        }
     }
 }
