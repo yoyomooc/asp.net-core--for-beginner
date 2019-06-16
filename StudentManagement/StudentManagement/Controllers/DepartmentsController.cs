@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -14,6 +15,20 @@ namespace StudentManagement.Controllers
     {
         public string List()
         {
+            if (Debugger.IsAttached)
+            {
+
+                Environment.Exit(0);
+
+                return "IsAttached() 方法。";
+
+            }
+
+           
+
+
+           
+
             return "DepartmentsController中的List() 方法。";
         }
 
