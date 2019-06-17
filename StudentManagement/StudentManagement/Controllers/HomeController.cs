@@ -44,23 +44,10 @@ namespace StudentManagement.Controllers
             return View(homeDetailsViewModel);
         }
 
-        [HttpGet]
+       
         public ViewResult Create()
         {
             return View();
-        }
-
-        [HttpPost]
-        public IActionResult Create(Student student)
-        {
-            if (ModelState.IsValid)
-            {
-
-                Student newStudent = _studentRepository.Add(student);
-                return RedirectToAction("Details", new { id = newStudent.Id });
-            }
-            return View();
-
         }
 
     }
