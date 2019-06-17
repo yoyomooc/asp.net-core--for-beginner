@@ -31,7 +31,7 @@ namespace StudentManagement.Controllers
 
             return "DepartmentsController中的List() 方法。";
         }
-
+       
         public string Details()
         {
             return "DepartmentsController中的Details() 方法。";
