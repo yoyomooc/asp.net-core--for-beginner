@@ -36,5 +36,14 @@ namespace StudentManagement.Controllers
         {
             return "DepartmentsController中的Details() 方法。";
         }
+
+        public JsonResult ReturnJson()
+        {
+            var model = new StudentManagement.Models.Student();
+
+
+            return Json(model);
+        }
+
     }
 }

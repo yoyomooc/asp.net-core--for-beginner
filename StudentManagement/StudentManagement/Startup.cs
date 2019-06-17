@@ -28,7 +28,7 @@ namespace StudentManagement
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().AddXmlSerializerFormatters();
-            services.AddSingleton<IStudentRepository, MockStudentRepository>();
+            services.AddTransient<IStudentRepository, MockStudentRepository>();
 
         }
 

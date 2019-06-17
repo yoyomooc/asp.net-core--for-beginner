@@ -28,6 +28,9 @@ namespace StudentManagement.Controllers
             
         }
 
+
+
+
        
         public IActionResult Details(int? id)
         {
