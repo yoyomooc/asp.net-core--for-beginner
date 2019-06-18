@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using StudentManagement.Models;
 
-namespace StudentManage
+namespace StudentManagement
 {
     public class Startup
     {

@@ -5,6 +5,10 @@ VisualStudioVersion = 16.0.28729.10
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StudentManagement", "StudentManagement\StudentManagement.csproj", "{C919EF40-4E54-40D9-980F-E06B14BA4D2E}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{F0DCEE49-EE17-4593-9A00-5A2DA013F673}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StudentManagement", "..\src\new\StudentManage\StudentManagement.csproj", "{C79716BD-2F59-4768-B9E3-1DB61CD70229}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,9 +19,16 @@ Global
 		{C919EF40-4E54-40D9-980F-E06B14BA4D2E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C919EF40-4E54-40D9-980F-E06B14BA4D2E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C919EF40-4E54-40D9-980F-E06B14BA4D2E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C79716BD-2F59-4768-B9E3-1DB61CD70229}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C79716BD-2F59-4768-B9E3-1DB61CD70229}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C79716BD-2F59-4768-B9E3-1DB61CD70229}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C79716BD-2F59-4768-B9E3-1DB61CD70229}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{C79716BD-2F59-4768-B9E3-1DB61CD70229} = {F0DCEE49-EE17-4593-9A00-5A2DA013F673}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B38D573C-A1AD-4254-B210-0BA5ABCEEE85}
