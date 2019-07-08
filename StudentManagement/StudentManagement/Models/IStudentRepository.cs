@@ -1,13 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
-namespace StudentManagement.Model
+namespace StudentManagement.Models
 {
-   public interface IStudentRepository
+    public interface IStudentRepository
     {
         Student GetStudent(int id);
-        void Save(Student student);
+
+
+        IEnumerable<Student> GetAllStudents();
+
+        Student Add(Student student);
     }
 }
