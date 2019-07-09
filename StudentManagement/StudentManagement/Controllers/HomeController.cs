@@ -57,7 +57,7 @@ namespace StudentManagement.Controllers
             {
 
                 Student newStudent = _studentRepository.Add(student);
-                return RedirectToAction("Details", new { id = newStudent.Id });
+               // return RedirectToAction("Details", new { id = newStudent.Id });
             }
             return View();
         }

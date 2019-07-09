@@ -28,10 +28,10 @@ namespace StudentManagement
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().AddXmlSerializerFormatters();
-            services.AddSingleton<IStudentRepository, MockStudentRepository>();
+            services.AddTransient<IStudentRepository, MockStudentRepository>();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        // This method gets called by the runtim0e. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             //如果环境是Development，调用 Developer Exception Page 
