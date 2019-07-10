@@ -4,27 +4,27 @@
     ViewBag.Title = "学生列表页面";
 }
 
-
- 
-
 <div class="card-deck">
     @foreach (var student in Model)
     {
-        <div class="card m-3">
-            <div class="card-header">
-                <h3>@student.Name</h3>
-            </div>
+        var photoPath = "~/images/" + (student.PhotoPath ?? "noimage.jpg");
 
-            <img class="card-img-top" src="~/images/timg.jpg" asp-append-version="true" />
-            <div class="card-footer text-center">                
-               
-               <a asp-controller="home" asp-action="details" asp-route-id="@student.Id" class="btn btn-primary m-1">查看</a>    
-                
-           
-                <a href="#" class="btn btn-primary m-1">编辑</a>
-                <a href="#" class="btn btn-danger m-1" >删除</a>
-            </div>
+    <div class="card m-3">
+        <div class="card-header">
+            <h3>@student.Name</h3>
         </div>
+        <img class="card-img-top imageThumbnail" src="@photoPath"
+             asp-append-version="true" />
+
+        <div class="card-footer text-center">
+
+            <a asp-controller="home" asp-action="details" asp-route-id="@student.Id" class="btn btn-primary m-1">查看</a>
+
+
+            <a href="#" class="btn btn-primary m-1">编辑</a>
+            <a href="#" class="btn btn-danger m-1">删除</a>
+        </div>
+    </div>
     }
 </div>
 
