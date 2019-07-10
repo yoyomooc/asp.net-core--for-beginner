@@ -15,5 +15,12 @@ namespace StudentManagement.Models
 
         Student Add(Student student);
 
+
+        Student Update(Student updateStudent);
+
+        Student Delete(int id);
+
+
+
     }
 }
