@@ -1,41 +1,76 @@
-﻿@model Student
+﻿@model StudentCreateViewModel
 
 @{
     ViewBag.Title = "创建学生信息";
 }
 
-<form asp-controller="home" asp-action="create" method="post" class="mt-3">
-    <div asp-validation-summary="All" class="text-danger"></div>
-    <div class="form-group row">
-        <label asp-for="Name" class="col-sm-2 col-form-label"></label>
-        <div class="col-sm-10">
-            <input asp-for="Name" class="form-control" placeholder="请输入名字" />
-            <span asp-validation-for="Name" class="text-danger"></span>
-        </div>
-    </div>
+@* 要支持文件上传，请设置表单元素为 enctype="multipart/form-data"
+enctype 属性规定在发送到服务器之前应该如何对表单数据进行编码。   
+application/x-www-form-urlencoded	在发送前编码所有字符（默认）
+multipart/form-data	不对字符编码。在使用包含文件上传控件的表单时，必须使用该值。
+text/plain	空格转换为 "+" 加号，但不对特殊字符编码。
+    以上都是Hhtml的基础。。。    
+    *@
+    <form enctype="multipart/form-data" asp-controller="home" asp-action="create" method="post" class="mt-3">
 
-    <div class="form-group row">
-        <label asp-for="Email" class="col-sm-2 col-form-label"></label>
-        <div class="col-sm-10">
-            <input asp-for="Email" class="form-control" placeholder="请输入邮箱地址">
-            <span asp-validation-for="Email" class="text-danger"></span>
+        <div class="form-group row">
+            <label asp-for="Name" class="col-sm-2 col-form-label"></label>
+            <div class="col-sm-10">
+                <input asp-for="Name" class="form-control" placeholder="请输入名字" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
         </div>
-    </div>
 
-    <div class="form-group row">
-        <label asp-for="ClassName" class="col-sm-2 col-form-label"></label>
-        <div class="col-sm-10">
-            <select asp-for="ClassName" class="custom-select mr-sm-2"
-                    asp-items="Html.GetEnumSelectList<ClassNameEnum>()">
-                <option value=""> 请选择</option>
-            </select>
-            <span asp-validation-for="ClassName" class="text-danger"></span>
+        <div class="form-group row">
+            <label asp-for="Email" class="col-sm-2 col-form-label"></label>
+            <div class="col-sm-10">
+                <input asp-for="Email" class="form-control" placeholder="请输入邮箱地址">
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
         </div>
-    </div>
 
-    <div class="form-group row">
-        <div class="col-sm-10">
-            <button type="submit" class="btn btn-primary">创建</button>
+        <div class="form-group row">
+            <label asp-for="ClassName" class="col-sm-2 col-form-label"></label>
+            <div class="col-sm-10">
+                <select asp-for="ClassName" class="custom-select mr-sm-2"
+                        asp-items="Html.GetEnumSelectList<ClassNameEnum>()">
+                    <option value=""> 请选择</option>
+                </select>
+                <span asp-validation-for="ClassName" class="text-danger"></span>
+            </div>
         </div>
-    </div>
-</form>
+        @*
+        我们使用了asp-for的taghelper设置input的属性为"Photo"。
+        “Photo”属性类型是IFormFile，
+        所以在运行的时候ASP.NET Core会将该标签生成上传控件(input type=file)
+        *@
+
+        <div class="form-group row">
+            <label asp-for="Photo" class="col-sm-2 col-form-label"></label>
+            <div class="col-sm-10">
+                <div class="custom-file">
+                    <input asp-for="Photo" class="form-control custom-file-input">
+                    <label class="custom-file-label">请选择...</label>
+                </div>
+            </div>
+        </div>
+
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <div class="form-group row">
+            <div class="col-sm-10">
+                <button type="submit" class="btn btn-primary">创建</button>
+            </div>
+        </div>
+        @*以下JavaScript代码的作用是，可以在上传标签中显示选定的上传文件名称。*@
+
+        @section Scripts {
+            <script>
+                $(document).ready(function () {
+                    $('.custom-file-input').on("change", function () {
+                        var fileName = $(this).val().split("\\").pop();
+                        $(this).next('.custom-file-label').html(fileName);
+                    });
+                });
+            </script>
+        }
+    </form>
