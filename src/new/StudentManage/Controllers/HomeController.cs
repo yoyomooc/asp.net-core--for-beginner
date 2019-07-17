@@ -5,6 +5,7 @@ using StudentManagement.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Microsoft.AspNetCore.Http;
 
 namespace StudentManagement.Controllers
 {
@@ -64,19 +65,24 @@ namespace StudentManagement.Controllers
             {
                 string uniqueFileName = null;
 
-       // 如果传入模型对象中的Photo属性不为null，则表示该用户选择了要上传的图片信息。
-                if (model.Photo != null)
+                // 如果传入模型对象中的Photo属性不为null,并且Count>0，则表示用户选择至少一个要上传的文件。
+                if (model.Photos != null && model.Photos.Count > 0)
                 {
-    //必须将图像上传到wwwroot中的images文件夹
-     //而要获取wwwroot文件夹的路径，我们需要注入 ASP.NET Core提供的HostingEnvironment服务
-       string uploadsFolder = Path.Combine(hostingEnvironment.WebRootPath, "images");
-   //为了确保文件名是唯一的，我们在文件名后附加一个新的GUID值和一个下划线
-      uniqueFileName = Guid.NewGuid().ToString() + "_" + model.Photo.FileName;
-     string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-         //使用IFormFile接口提供的CopyTo()方法将文件复制到wwwroot/images文件夹
-                    model.Photo.CopyTo(new FileStream(filePath, FileMode.Create));
+                    //循环每个选定的文件
+                    foreach (IFormFile photo in model.Photos)
+                    {
+                        //必须将图像上传到wwwroot中的images文件夹
+                        //而要获取wwwroot文件夹的路径，我们需要注入 ASP.NET Core提供的HostingEnvironment服务
+                        //通过HostingEnvironment服务去获取wwwroot文件夹的路径
+                        string uploadsFolder = Path.Combine(hostingEnvironment.WebRootPath, "images");
+                        //为了确保文件名是唯一的，我们在文件名后附加一个新的GUID值和一个下划线
+                        uniqueFileName = Guid.NewGuid().ToString() + "_" + photo.FileName;
+                        string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                        //使用IFormFile接口提供的CopyTo()方法将文件复制到wwwroot/images文件夹
+                        photo.CopyTo(new FileStream(filePath, FileMode.Create));
+                    }
+                  
                 }
-
                 Student newStudent = new Student
                 {
                     Name = model.Name,
