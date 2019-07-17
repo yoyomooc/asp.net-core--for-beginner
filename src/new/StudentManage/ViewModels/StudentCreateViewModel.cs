@@ -24,7 +24,7 @@ namespace StudentManagement.ViewModels
         [Required(ErrorMessage = "请输入邮箱地址")]
         public string Email { get; set; }
 
-
+        [Display(Name = "图像")]
         public IFormFile Photo { get; set; }
     }
 }
