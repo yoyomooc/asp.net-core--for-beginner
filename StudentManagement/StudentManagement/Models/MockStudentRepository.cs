@@ -30,6 +30,19 @@ namespace StudentManagement.Models
             return student;
         }
 
+        public Student Delete(int id)
+        {
+            Student student = _studentList.FirstOrDefault(s => s.Id == id);
+
+            if (student!=null)
+            {
+                _studentList.Remove(student);
+            }
+
+
+            return student;
+        }
+
         public IEnumerable<Student> GetAllStudents()
         {
             return _studentList;
@@ -38,6 +51,19 @@ namespace StudentManagement.Models
         public Student GetStudent(int id)
         {
             return _studentList.FirstOrDefault(a => a.Id == id);
+        }
+
+        public Student Update(Student updateStudent)
+        {
+            Student student = _studentList.FirstOrDefault(s => s.Id == updateStudent.Id);
+
+            if (student !=null)
+            {
+                student.Name = updateStudent.Name;
+                student.Email = updateStudent.Email;
+                student.ClassName = updateStudent.ClassName;
+            }
+            return student;
         }
     }
 }
