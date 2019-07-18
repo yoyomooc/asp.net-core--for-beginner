@@ -17,6 +17,15 @@
     <None Remove="wwwroot\js\**" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Remove="Migrations\20190718051335_AddPotoPathToStudents.cs" />
+    <Compile Remove="Migrations\20190718051335_AddPotoPathToStudents.Designer.cs" />
+    <Compile Remove="Migrations\20190718053023_AddPotoPathToStudents.cs" />
+    <Compile Remove="Migrations\20190718053023_AddPotoPathToStudents.Designer.cs" />
+    <Compile Remove="Migrations\20190718053107_AddDeleteProperty.cs" />
+    <Compile Remove="Migrations\20190718053107_AddDeleteProperty.Designer.cs" />
+  </ItemGroup>
+
  
 
   <ItemGroup>
