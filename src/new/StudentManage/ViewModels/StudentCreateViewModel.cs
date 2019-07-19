@@ -25,6 +25,6 @@ namespace StudentManagement.ViewModels
         public string Email { get; set; }
 
         [Display(Name = "图像")]
-        public List<IFormFile> Photos { get; set; }
+        public IFormFile Photo { get; set; }
     }
 }
