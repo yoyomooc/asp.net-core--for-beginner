@@ -31,10 +31,12 @@ namespace StudentManagement.Controllers
 
             return "DepartmentsController中的List() 方法。";
         }
-       
-        public string Details()
+
+        public ViewResult Details(int? id)
         {
-            return "DepartmentsController中的Details() 方法。";
+            throw new Exception("在Details视图中抛出异常");
+
+            // 其他代码
         }
 
         public JsonResult ReturnJson()

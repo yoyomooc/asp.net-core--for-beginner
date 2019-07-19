@@ -38,7 +38,12 @@ namespace StudentManagement
             //如果环境是Development，调用 Developer Exception Page 
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
+              app.UseDeveloperExceptionPage();
+            }
+            else
+            {
+                app.UseStatusCodePagesWithReExecute("/Error/{0}");
+
             }
             app.UseStaticFiles();
 
