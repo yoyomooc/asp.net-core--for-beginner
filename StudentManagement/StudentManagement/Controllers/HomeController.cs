@@ -63,22 +63,27 @@ namespace StudentManagement.Controllers
 
                 string uniqueFileName = null;
 
-                if (model.Photo!=null)
+                if (model.Photos!=null&&model.Photos.Count>0)
                 {
+                    foreach (var photo in model.Photos)
+                    {
+ //必须将图像上传到wwwroot中的images文件夹
+ //而要获取wwwroot文件夹的路径，我们需要注入 ASP.NET Core提供的HostingEnvironment服务
+ //通过HostingEnvironment服务去获取wwwroot文件夹的路径
+ string uploadsFolder = Path.Combine(hostingEnvironment.WebRootPath, "images");
+ //为了确保文件名是唯一的，我们在文件名后附加一个新的GUID值和一个下划线
 
-    string uploadsFolder = Path.Combine(hostingEnvironment.WebRootPath, "images");
+ uniqueFileName = Guid.NewGuid().ToString() + "_" + photo.FileName;
+ string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+ //使用IFormFile接口提供的CopyTo()方法将文件复制到wwwroot/images文件夹
+ photo.CopyTo(new FileStream(filePath, FileMode.Create));
+                    }
 
-      uniqueFileName = Guid.NewGuid().ToString() + "_" + model.Photo.FileName;
-                    string filePath = Path.Combine(uploadsFolder,uniqueFileName);
 
-                    model.Photo.CopyTo(new FileStream(filePath,FileMode.Create));
+                   
 
                 }
-                //c8a3f5d5-f0ad-4079-b192-5bb6358b3c9a_banner.jpg
-
-
-
-                Student newStudent = new Student
+                       Student newStudent = new Student
                 {
                     Name = model.Name,
                     Email = model.Email,
