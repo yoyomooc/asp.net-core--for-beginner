@@ -37,14 +37,16 @@ namespace StudentManagement.Controllers
 
 
 
-        public IActionResult Details(int id)        {
+        public IActionResult Details(int id) {
+
+            throw new Exception("此异常发生在Details视图中");
+
 
             Student student = _studentRepository.GetStudent(id);
 
             if (student==null)
             {
                 Response.StatusCode = 404;
-
                 return View("StudentNotFound",id);
 
             }

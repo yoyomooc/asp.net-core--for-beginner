@@ -43,15 +43,16 @@ namespace StudentManagement
         // This method gets called by the runtim0e. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            //如果环境是Development，调用 Developer Exception Page 
+            //如果环境是 Development，调用 Developer Exception Page 
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
             else
             {
-                 app.UseStatusCodePagesWithReExecute("/Error/{0}");
-             //    app.UseStatusCodePagesWithRedirects("/Error/{0}");
+             app.UseExceptionHandler("/Error");//拦截我们的异常
+             app.UseStatusCodePagesWithReExecute("/Error/{0}"); //拦截404找不到的页面信息
+
             }
 
 
