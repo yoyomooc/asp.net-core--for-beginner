@@ -26,9 +26,7 @@ namespace StudentManagement
        
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
-        public void ConfigureServices(IServiceCollection services)
-        {
-            
+        public void ConfigureServices(IServiceCollection services) {          
 
 
             services.AddDbContextPool<AppDbContext>(
@@ -50,9 +48,14 @@ namespace StudentManagement
             {
                 app.UseDeveloperExceptionPage();
             }
-            app.UseStaticFiles();
+            else
+            {
+                 app.UseStatusCodePagesWithReExecute("/Error/{0}");
+             //    app.UseStatusCodePagesWithRedirects("/Error/{0}");
+            }
 
-            //  app.UseMvcWithDefaultRoute();
+
+            app.UseStaticFiles();       
 
 
             app.UseMvc(routes =>
