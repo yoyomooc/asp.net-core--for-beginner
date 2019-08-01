@@ -39,8 +39,9 @@ namespace StudentManagement.Controllers
 
        
         public IActionResult Details(int id)
-        { 
-           
+        {
+            throw new Exception("在Details视图中抛出异常");
+
 
             Student student = _studentRepository.GetStudent(id);
             if (student==null)
