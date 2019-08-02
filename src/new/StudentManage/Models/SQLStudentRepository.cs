@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,10 +9,13 @@ namespace StudentManagement.Models
     public class SQLStudentRepository : IStudentRepository
     {
         private readonly AppDbContext context;
+        private readonly ILogger<SQLStudentRepository> logger;
 
-        public SQLStudentRepository(AppDbContext context)
+        public SQLStudentRepository(AppDbContext context,
+            ILogger<SQLStudentRepository> logger)
         {
             this.context = context;
+            this.logger = logger;
         }
 
 
@@ -41,6 +45,12 @@ namespace StudentManagement.Models
 
         public IEnumerable<Student> GetAllStudents()
         {
+            logger.LogTrace("Trace Log");
+            logger.LogDebug("Debug Log");
+            logger.LogInformation("Information Log");
+            logger.LogWarning("Warning Log");
+            logger.LogError("Error Log");
+            logger.LogCritical("Critical Log");
             return context.Students;
         }
 

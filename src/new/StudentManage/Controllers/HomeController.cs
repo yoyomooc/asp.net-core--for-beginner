@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 
 namespace StudentManagement.Controllers
 {
@@ -15,13 +16,18 @@ namespace StudentManagement.Controllers
     {
         private readonly IStudentRepository _studentRepository;
         private readonly IHostingEnvironment hostingEnvironment;
+        private readonly ILogger logger;
+
         //使用构造函数注入的方式注入IStudentRepository
         public HomeController(IStudentRepository studentRepository, 
-            IHostingEnvironment hostingEnvironment)
+            IHostingEnvironment hostingEnvironment,ILogger<HomeController> logger)
         {
+
+
             _studentRepository = studentRepository;
             this.hostingEnvironment = hostingEnvironment;
-
+            this.logger = logger;
+       
         }
 
 
@@ -40,7 +46,16 @@ namespace StudentManagement.Controllers
        
         public IActionResult Details(int id)
         {
-            throw new Exception("在Details视图中抛出异常");
+
+
+            logger.LogTrace("Trace Log");
+            logger.LogDebug("Debug Log");
+            logger.LogInformation("Information Log");
+            logger.LogWarning("Warning Log");
+            logger.LogError("Error Log");
+            logger.LogCritical("Critical Log");
+
+            //  throw new Exception("在Details视图中抛出异常");
 
 
             Student student = _studentRepository.GetStudent(id);
