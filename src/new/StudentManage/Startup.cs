@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -28,6 +29,10 @@ namespace StudentManagement
             services.AddDbContextPool<AppDbContext>(
        options => options.UseSqlServer(_config.GetConnectionString("StudentDBConnection")));
 
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddEntityFrameworkStores<AppDbContext>();
+
+
             services.AddMvc();
             services.AddScoped<IStudentRepository, SQLStudentRepository>();
         }
@@ -48,8 +53,7 @@ namespace StudentManagement
             }
             app.UseStaticFiles();
 
-            //  app.UseMvcWithDefaultRoute();
-
+            app.UseAuthentication();
 
             app.UseMvc(routes =>
             {
