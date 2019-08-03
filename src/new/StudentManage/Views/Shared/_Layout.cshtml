@@ -37,8 +37,9 @@
                 <span class="navbar-toggler-icon"></span>
 
             </button>
-        
 
+ @using Microsoft.AspNetCore.Identity
+ @inject SignInManager<IdentityUser> SignInManager
 
             <div id="collapsibleNavbar" class="collapse navbar-collapse">
                 <ul class="navbar-nav">
@@ -51,7 +52,33 @@
 
                     </li>
                 </ul>
-
+                <ul class="navbar-nav ml-auto">
+                    @*如果用户已登录，则显示注销链接*@
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                        <li class="nav-item">
+                            <form method="post" asp-controller="account" asp-action="logout">
+                                <button type="submit" style="width:auto"
+                                        class="nav-link btn btn-link py-0">
+                                    注销 @User.Identity.Name
+                                </button>
+                            </form>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="account" asp-action="register">
+                                注册
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="account" asp-action="login">
+                                登录
+                            </a>
+                        </li>
+                    }
+                </ul>
 
             </div>
 
