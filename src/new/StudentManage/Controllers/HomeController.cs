@@ -1,17 +1,14 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using StudentManagement.Models;
 using StudentManagement.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
 
 namespace StudentManagement.Controllers
 {
-
-    
     public class HomeController : Controller
     {
         private readonly IStudentRepository _studentRepository;
@@ -19,37 +16,23 @@ namespace StudentManagement.Controllers
         private readonly ILogger logger;
 
         //使用构造函数注入的方式注入IStudentRepository
-        public HomeController(IStudentRepository studentRepository, 
-            IHostingEnvironment hostingEnvironment,ILogger<HomeController> logger)
+        public HomeController(IStudentRepository studentRepository,
+            IHostingEnvironment hostingEnvironment, ILogger<HomeController> logger)
         {
-
-
             _studentRepository = studentRepository;
             this.hostingEnvironment = hostingEnvironment;
             this.logger = logger;
-            
-            
-       
         }
 
-
-      
         public IActionResult Index()
         {
-         IEnumerable<Student> students = _studentRepository.GetAllStudents(); 
+            IEnumerable<Student> students = _studentRepository.GetAllStudents();
 
-            return View(students);      
-            
+            return View(students);
         }
 
-
-
-
-       
         public IActionResult Details(int id)
         {
-
-
             logger.LogTrace("Trace(跟踪) Log");
             logger.LogDebug("Debug(调试) Log");
             logger.LogInformation("信息(Information) Log");
@@ -59,9 +42,8 @@ namespace StudentManagement.Controllers
 
             //  throw new Exception("在Details视图中抛出异常");
 
-
             Student student = _studentRepository.GetStudent(id);
-            if (student==null)
+            if (student == null)
             {
                 Response.StatusCode = 404;
                 return View("StudentNotFound", id);
@@ -75,8 +57,6 @@ namespace StudentManagement.Controllers
             };
             return View(homeDetailsViewModel);
         }
-
-
 
         [HttpGet]
         public ViewResult Edit(int id)
@@ -98,25 +78,24 @@ namespace StudentManagement.Controllers
         [HttpPost]
         public IActionResult Edit(StudentEditViewModel model)
         {
-           
             //检查提供的数据是否有效，如果没有通过验证，需要重新编辑学生信息
             //这样用户就可以更正并重新提交编辑表单
             if (ModelState.IsValid)
             {
-                //从数据库中查询正在编辑的学生信息                
+                //从数据库中查询正在编辑的学生信息
                 Student student = _studentRepository.GetStudent(model.Id);
-                //用模型对象中的数据更新student对象                 
+                //用模型对象中的数据更新student对象
                 student.Name = model.Name;
                 student.Email = model.Email;
                 student.ClassName = model.ClassName;
 
                 //如果用户想要更改照片，可以上传新照片它会被模型对象上的Photo属性接收
                 //如果用户没有上传照片，那么我们会保留现有的照片信息
-               
+
                 if (model.Photo != null)
                 {
-                   //如果上传了新的照片，则必须显示新的照片信息
-                   //因此我们会检查当前学生信息中是否有照片，有的话，就会删除它。
+                    //如果上传了新的照片，则必须显示新的照片信息
+                    //因此我们会检查当前学生信息中是否有照片，有的话，就会删除它。
                     if (model.ExistingPhotoPath != null)
                     {
                         string filePath = Path.Combine(hostingEnvironment.WebRootPath,
@@ -126,9 +105,9 @@ namespace StudentManagement.Controllers
 
                     //我们将保存新的照片到 wwwroot/images  文件夹中，并且会更新
                     //Student对象中的PhotoPath属性，然后最终都会将它们保存到数据库中
-                  student.PhotoPath = ProcessUploadedFile(model);
-                }                 
-                
+                    student.PhotoPath = ProcessUploadedFile(model);
+                }
+
                 //调用仓储服务中的Update方法，保存studnet对象中的数据，更新数据库表中的信息。
                 Student updatedstudent = _studentRepository.Update(student);
 
@@ -167,7 +146,6 @@ namespace StudentManagement.Controllers
             return View();
         }
 
-
         [HttpPost]
         public IActionResult Create(StudentCreateViewModel model)
         {
@@ -201,6 +179,5 @@ namespace StudentManagement.Controllers
 
             return View();
         }
-
     }
 }

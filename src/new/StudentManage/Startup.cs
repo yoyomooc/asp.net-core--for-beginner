@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using StudentManagement.Middleware;
 using StudentManagement.Models;
 
 namespace StudentManagement
@@ -31,43 +27,43 @@ namespace StudentManagement
             services.AddDbContextPool<AppDbContext>(
        options => options.UseSqlServer(_config.GetConnectionString("StudentDBConnection")));
 
- 
-
-            services.AddIdentity<IdentityUser, IdentityRole>(options =>
+            services.Configure<IdentityOptions>(options =>
             {
-                options.Password.RequiredLength = 10;
+                options.Password.RequiredLength = 6;
                 options.Password.RequiredUniqueChars = 3;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireLowercase = false;
                 options.Password.RequireNonAlphanumeric = false;
-                
-            }).AddEntityFrameworkStores<AppDbContext>();
+            });
 
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddErrorDescriber<CustomIdentityErrorDescriber>()
+                .AddEntityFrameworkStores<AppDbContext>();
 
-            services.AddMvc(config=>
-            {
+            services.AddMvc(config => {
                 var policy = new AuthorizationPolicyBuilder()
-                        .RequireAuthenticatedUser()
-                        .Build();
-
+                                .RequireAuthenticatedUser()
+                                .Build();
                 config.Filters.Add(new AuthorizeFilter(policy));
+            });
 
 
-            }).AddXmlSerializerFormatters();
+
             services.AddScoped<IStudentRepository, SQLStudentRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            //如果环境是Development，调用 Developer Exception Page 
+            //如果环境是Development，调用 Developer Exception Page
             if (env.IsDevelopment())
             {
-              app.UseDeveloperExceptionPage();
+                app.UseDeveloperExceptionPage();
             }
             else
             {
                 app.UseExceptionHandler("/Error");
                 app.UseStatusCodePagesWithReExecute("/Error/{0}");
-
             }
             app.UseStaticFiles();
 
