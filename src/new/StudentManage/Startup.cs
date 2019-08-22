@@ -31,14 +31,15 @@ namespace StudentManagement
             services.AddDbContextPool<AppDbContext>(
        options => options.UseSqlServer(_config.GetConnectionString("StudentDBConnection")));
 
+ 
+
             services.AddIdentity<IdentityUser, IdentityRole>(options =>
             {
                 options.Password.RequiredLength = 10;
                 options.Password.RequiredUniqueChars = 3;
                 options.Password.RequireNonAlphanumeric = false;
                 
-            })
-                .AddEntityFrameworkStores<AppDbContext>();
+            }).AddEntityFrameworkStores<AppDbContext>();
 
 
             services.AddMvc(config=>

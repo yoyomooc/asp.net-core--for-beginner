@@ -27,6 +27,8 @@ namespace StudentManagement.Controllers
             _studentRepository = studentRepository;
             this.hostingEnvironment = hostingEnvironment;
             this.logger = logger;
+            
+            
        
         }
 
@@ -48,12 +50,12 @@ namespace StudentManagement.Controllers
         {
 
 
-            logger.LogTrace("Trace Log");
-            logger.LogDebug("Debug Log");
-            logger.LogInformation("Information Log");
-            logger.LogWarning("Warning Log");
-            logger.LogError("Error Log");
-            logger.LogCritical("Critical Log");
+            logger.LogTrace("Trace(跟踪) Log");
+            logger.LogDebug("Debug(调试) Log");
+            logger.LogInformation("信息(Information) Log");
+            logger.LogWarning("警告(Warning) Log");
+            logger.LogError("错误(Error) Log");
+            logger.LogCritical("严重(Critical) Log");
 
             //  throw new Exception("在Details视图中抛出异常");
 
