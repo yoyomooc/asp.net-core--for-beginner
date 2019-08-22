@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Hosting.Internal;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using StudentManagement.Models;
 using StudentManagement.ViewModels;
 using System;
@@ -14,13 +15,18 @@ namespace StudentManagement.Controllers
     {
         private readonly IStudentRepository _studentRepository;
         private readonly HostingEnvironment hostingEnvironment;
+        private readonly ILogger logger;
+
+
 
         //使用构造函数注入的方式注入IStudentRepository
-        public HomeController(IStudentRepository studentRepository, HostingEnvironment hostingEnvironment)
+        public HomeController(IStudentRepository studentRepository, HostingEnvironment hostingEnvironment,
+            ILogger<HomeController> logger)
         {
             _studentRepository = studentRepository;
             this.hostingEnvironment = hostingEnvironment;
-
+            this.logger = logger;
+            
         }
 
 
@@ -37,9 +43,20 @@ namespace StudentManagement.Controllers
 
 
 
-        public IActionResult Details(int id) {
+        public IActionResult Details(int id)
+        {
 
-            throw new Exception("此异常发生在Details视图中");
+            logger.LogTrace("Trace(跟踪) Log");
+            logger.LogDebug("Debug(调试) Log");
+            logger.LogInformation("信息(Information) Log");
+            logger.LogWarning("警告(Warning) Log");
+            logger.LogError("错误(Error) Log");
+            logger.LogCritical("严重(Critical) Log");
+
+
+
+
+            //  throw new Exception("此异常发生在Details视图中");
 
 
             Student student = _studentRepository.GetStudent(id);
