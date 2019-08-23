@@ -96,11 +96,11 @@ namespace StudentManagement.Controllers
                 {
                     if (!string.IsNullOrEmpty(returnUrl))
                     {
-                        return Redirect(returnUrl);
+                        return LocalRedirect(returnUrl);
                     }
                     else
                     {
-                        return RedirectToAction("index", "home");
+                        return RedirectToAction("Index", "home");
                     }
                 }
 
@@ -111,4 +111,17 @@ namespace StudentManagement.Controllers
         }
 
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
