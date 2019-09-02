@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace StudentManagement.Controllers
 {
-    public class AccountController:Controller
+    public class AccountController : Controller
     {
         private UserManager<IdentityUser> userManager;
         private SignInManager<IdentityUser> signInManager;
@@ -19,12 +19,14 @@ namespace StudentManagement.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult Register()
         {
             return View();
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
             if (ModelState.IsValid)
@@ -39,7 +41,7 @@ namespace StudentManagement.Controllers
                 //将用户数据存储在AspNetUsers数据库表中
                 var result = await userManager.CreateAsync(user, model.Password);
 
-               
+
                 //如果成功创建用户，则使用登录服务登录用户信息
                 //并重定向到home econtroller的索引操作
                 if (result.Succeeded)
@@ -52,7 +54,7 @@ namespace StudentManagement.Controllers
                 //将由验证摘要标记助手显示到视图中
                 foreach (var error in result.Errors)
                 {
-                    if (error.Code== "PasswordRequiresUpper")
+                    if (error.Code == "PasswordRequiresUpper")
                     {
                         error.Description = "密码必须至少有一个大写字母('A'-'Z')。";
                     }
@@ -110,13 +112,31 @@ namespace StudentManagement.Controllers
             return View(model);
         }
 
+
+
+        [AcceptVerbs("Get", "Post")]
+        [AllowAnonymous]
+        public async Task<IActionResult> IsEmailInUse(string email)
+        {
+            var user = await userManager.FindByEmailAsync(email);
+
+            if (user == null)
+            {
+                return Json(true);
+            }
+            else
+            {
+                return Json($"邮箱： {email} 已经被注册使用了。");
+            }
+
+
+        }
+
+
+
+
+
     }
-
-
-
-
-
-
 
 
 

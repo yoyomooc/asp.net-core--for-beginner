@@ -24,7 +24,7 @@
 
 </head>
 <body>
- 
+
 
     <div class="container">
 
@@ -38,8 +38,8 @@
 
             </button>
 
- @using Microsoft.AspNetCore.Identity
- @inject SignInManager<IdentityUser> SignInManager
+            @using Microsoft.AspNetCore.Identity
+            @inject SignInManager<IdentityUser> SignInManager
             <div id="collapsibleNavbar" class="collapse navbar-collapse">
                 <ul class="navbar-nav">
                     <li class="nav-item">
@@ -48,7 +48,7 @@
                     <li class="nav-item">
                         <a class="nav-link" asp-controller="home" asp-action="Create">添加学生</a>
                     </li>
-                </ul> 
+                </ul>
                 <ul class="navbar-nav ml-auto">
                     @*如果用户已登录，则显示注销链接*@
                     @if (SignInManager.IsSignedIn(User))
@@ -63,7 +63,8 @@
                         </li>
                     }
                     else
-                    {          <li class="nav-item">
+                    {
+                        <li class="nav-item">
                             <a class="nav-link" asp-controller="account" asp-action="register">
                                 注册
                             </a>
@@ -72,7 +73,8 @@
                             <a class="nav-link" asp-controller="account" asp-action="login">
                                 登录
                             </a>
-                        </li>                    }
+                        </li>
+}
                 </ul>
             </div>
 
@@ -90,7 +92,10 @@
 
 
     <script src="~/lib/jquery/jquery.js"></script>
+    <script src="~/lib/jquery-validate/jquery.validate.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js">
     <script src="~/lib/twitter-bootstrap/js/bootstrap.js"></script>
+
 
     @RenderSection("Scripts", required: false)
 
