@@ -7,10 +7,12 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using StudentManagement.Middlewares;
 using StudentManagement.Models;
 
 namespace StudentManagement
@@ -32,6 +34,22 @@ namespace StudentManagement
             services.AddDbContextPool<AppDbContext>(
                 options=>options.UseSqlServer(_configuration.GetConnectionString("StudentDBConnection"))                
                 );
+
+
+            services.Configure<IdentityOptions>(options=>
+            {
+                options.Password.RequiredLength = 6;
+              //  options.Password.RequiredUniqueChars = 3;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;              
+
+            });
+
+
+            services.AddIdentity<IdentityUser, IdentityRole>()
+               .AddErrorDescriber<CustomIdentityErrorDescriber>()
+                .AddEntityFrameworkStores<AppDbContext>();
+
 
             services.AddMvc().AddXmlSerializerFormatters();
 
@@ -56,13 +74,16 @@ namespace StudentManagement
             }
 
 
-            app.UseStaticFiles();       
+            app.UseStaticFiles();
 
+            app.UseAuthentication();
 
             app.UseMvc(routes =>
             {
                 routes.MapRoute("default", "{controller=Home}/{action=Index}/{id?}");
             });
+
+
 
         }
     }
