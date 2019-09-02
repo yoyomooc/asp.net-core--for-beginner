@@ -27,7 +27,8 @@
  
 
     <div class="container">
-
+        @using Microsoft.AspNetCore.Identity
+        @inject  SignInManager<IdentityUser> SignInManager
         <nav class="navbar navbar-expand-sm  bg-dark navbar-dark ">
 
             <a class="navbar-brand" asp-controller="home" asp-action="index">
@@ -53,9 +54,28 @@
                 </ul>
 
                 <ul class="navbar-nav ml-auto">
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+
                     <li class="nav-item">
-                        <a class="nav-link"asp-controller="account" asp-action="Register" > 注册</a>
+                        <form asp-controller="account" asp-action="logout" method="post">                           
+                            <button type="submit" style="width:auto" class="nav-link btn btn-link py-0">注销 @User.Identity.Name</button>
+                         </form>                     
                     </li>
+
+                    }
+                    else
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="account" asp-action="Register"> 注册</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="account" asp-action="Login"> 登录</a>
+                        </li>
+                    }
+
+
+
                 </ul>
 
             </div>
