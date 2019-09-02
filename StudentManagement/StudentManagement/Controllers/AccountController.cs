@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using StudentManagement.ViewModels;
 using System;
@@ -8,6 +9,9 @@ using System.Threading.Tasks;
 
 namespace StudentManagement.Controllers
 {
+
+
+    [AllowAnonymous]
     public class AccountController:Controller   {
         private UserManager<IdentityUser> userManager;
         private SignInManager<IdentityUser> signInManager;
@@ -62,6 +66,42 @@ namespace StudentManagement.Controllers
             return View(model);
 
         }
+
+        #region 登录功能
+
+       
+        [HttpGet]
+        public IActionResult Login()
+        {
+
+            return View();
+        }
+
+
+
+        [HttpPost]
+        public async Task<IActionResult> Login(LoginViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+
+                var result = await signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
+
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("Index", "home");
+                }
+                ModelState.AddModelError(string.Empty, "登录失败，请重试");
+            }
+            return View(model);
+
+        }
+        #endregion
+
+
+
+
+
 
         [HttpPost]
         public async Task<IActionResult> Logout()

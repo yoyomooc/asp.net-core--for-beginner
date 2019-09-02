@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Hosting.Internal;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting.Internal;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using StudentManagement.Models;
@@ -9,7 +10,6 @@ using System.IO;
 
 namespace StudentManagement.Controllers
 {
-
 
     public class HomeController : Controller
     {
@@ -42,7 +42,7 @@ namespace StudentManagement.Controllers
 
 
 
-
+      
         public IActionResult Details(int id)
         {
 
