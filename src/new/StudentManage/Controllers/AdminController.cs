@@ -29,13 +29,7 @@ namespace StudentManagement.Controllers
             return View(roles);
         }
 
-        //其他代码
-
-
-
-
-
-
+       
         [HttpGet]
         public IActionResult CreateRole()
         {
@@ -225,13 +219,44 @@ namespace StudentManagement.Controllers
         }
 
 
+        [HttpPost]
+        public async Task<IActionResult> DeleteRole(string id)
+        {
+            var role = await roleManager.FindByIdAsync(id);
+
+            if (role == null)
+            {
+                ViewBag.ErrorMessage = $"无法找到ID为{id}的角色信息";
+                return View("NotFound");
+            }
+            else
+            {
+                var result = await roleManager.DeleteAsync(role);
+
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("ListRoles");
+                }
+
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError("", error.Description);
+                }
+
+                return View("ListRoles");
+            }
+        }
+
+
+
+
         #endregion
 
 
 
 
-        #region 用户管理
-           [HttpGet]
+                #region 用户管理
+        [HttpGet]
     public IActionResult ListUsers()
     {
         var users = userManager.Users;
