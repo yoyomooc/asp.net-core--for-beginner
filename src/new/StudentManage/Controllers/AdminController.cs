@@ -231,14 +231,72 @@ namespace StudentManagement.Controllers
 
 
         #region 用户管理
+           [HttpGet]
+    public IActionResult ListUsers()
+    {
+        var users = userManager.Users;
+        return View(users);
+    }
         [HttpGet]
-        public IActionResult ListUsers()
+        public async Task<IActionResult> EditUser(string id)
         {
-            var users = userManager.Users;
-            return View(users);
+            var user = await userManager.FindByIdAsync(id);
+
+            if (user == null)
+            {
+                ViewBag.ErrorMessage = $"无法找到ID为{id}的用户";
+                return View("NotFound");
+            }
+
+            // GetClaimsAsync返回用户声明列表
+            var userClaims = await userManager.GetClaimsAsync(user);
+            // GetRolesAsync返回用户角色列表
+            var userRoles = await userManager.GetRolesAsync(user);
+
+            var model = new EditUserViewModel
+            {
+                Id = user.Id,
+                Email = user.Email,
+                UserName = user.UserName,
+                City = user.City,
+                Claims = userClaims.Select(c => c.Value).ToList(),
+                Roles = userRoles
+            };
+
+            return View(model);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> EditUser(EditUserViewModel model)
+        {
+            var user = await userManager.FindByIdAsync(model.Id);
 
+            if (user == null)
+            {
+                ViewBag.ErrorMessage = $"无法找到ID为{model.Id}的用户";
+                return View("NotFound");
+            }
+            else
+            {
+                user.Email = model.Email;
+                user.UserName = model.UserName;
+                user.City = model.City;
+
+                var result = await userManager.UpdateAsync(user);
+
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("ListUsers");
+                }
+
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError("", error.Description);
+                }
+
+                return View(model);
+            }
+        }
         #endregion
 
 

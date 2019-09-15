@@ -48,6 +48,15 @@ namespace StudentManagement.Controllers
                 //并重定向到home econtroller的索引操作
                 if (result.Succeeded)
                 {
+                    //如果用户已登录并属于Admin角色。
+                    //那么就是Admin正在创建新用户。
+                    //所以重定向Admin用户对ListRoles的视图列表
+                    if (signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+                    {
+                        return RedirectToAction("ListUsers", "Admin");
+                    }
+
+
                     await signInManager.SignInAsync(user, isPersistent: false);
                     return RedirectToAction("index", "home");
                 }
@@ -56,10 +65,7 @@ namespace StudentManagement.Controllers
                 //将由验证摘要标记助手显示到视图中
                 foreach (var error in result.Errors)
                 {
-                    if (error.Code == "PasswordRequiresUpper")
-                    {
-                        error.Description = "密码必须至少有一个大写字母('A'-'Z')。";
-                    }
+                     
                                      
 
                     ModelState.AddModelError(string.Empty, error.Description);

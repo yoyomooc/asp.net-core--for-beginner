@@ -51,10 +51,17 @@
 
                     @if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
                     {
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="Admin" asp-action="ListRoles">
-                                角色管理
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
+                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                管理
                             </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <a class="dropdown-item" asp-controller="Admin"
+                                   asp-action="ListUsers">用户列表</a>
+                                <a class="dropdown-item" asp-controller="Admin"
+                                   asp-action="ListRoles">角色列表</a>
+                            </div>
                         </li>
                     }
                 </ul>
@@ -83,7 +90,7 @@
                                 登录
                             </a>
                         </li>
-}
+                    }
                 </ul>
             </div>
 
@@ -103,6 +110,7 @@
     <script src="~/lib/jquery/jquery.js"></script>
     <script src="~/lib/jquery-validate/jquery.validate.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js">
+        <script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>
     <script src="~/lib/twitter-bootstrap/js/bootstrap.js"></script>
 
 
