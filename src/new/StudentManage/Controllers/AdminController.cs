@@ -21,8 +21,7 @@ namespace StudentManagement.Controllers
 
         }
 
-
-
+        #region 角色管理
         [HttpGet]
         public IActionResult ListRoles()
         {
@@ -72,10 +71,6 @@ namespace StudentManagement.Controllers
 
             return View(model);
         }
-
-
-
-
 
 
 
@@ -229,6 +224,22 @@ namespace StudentManagement.Controllers
             return RedirectToAction("EditRole", new { Id = roleId });
         }
 
+
+        #endregion
+
+
+
+
+        #region 用户管理
+        [HttpGet]
+        public IActionResult ListUsers()
+        {
+            var users = userManager.Users;
+            return View(users);
+        }
+
+
+        #endregion
 
 
     }

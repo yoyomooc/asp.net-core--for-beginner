@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StudentManagement.ViewModels;
 
@@ -23,16 +24,12 @@ namespace StudentManagement.Controllers
 
                 return "IsAttached() 方法。";
 
-            }
-
-           
-
-
-           
+            }         
 
             return "DepartmentsController中的List() 方法。";
         }
 
+        [Authorize(Roles = "tdmin")]
         public ViewResult Details(int? id)
         {
             throw new Exception("在Details视图中抛出异常");
@@ -40,6 +37,7 @@ namespace StudentManagement.Controllers
             // 其他代码
         }
 
+        [Authorize(Roles = "Admin")]
         public JsonResult ReturnJson()
         {
             var model = new StudentManagement.Models.Student();
@@ -48,7 +46,9 @@ namespace StudentManagement.Controllers
             return Json(model);
         }
 
-     
+
+        [Authorize(Roles ="admin")]
+
         public async Task<IActionResult> Login(LoginViewModel model, string returnUrl)
         {
                                   
