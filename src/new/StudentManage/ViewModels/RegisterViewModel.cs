@@ -19,6 +19,9 @@ namespace StudentManagement.ViewModels
         ErrorMessage = "电子邮件的后缀必须是52abp.com")]
         public string Email { get; set; }
 
+
+       
+
         [Required]
         [Display(Name = "密码")]
         [DataType(DataType.Password)]
