@@ -10,7 +10,7 @@ using StudentManagement.Models;
 namespace StudentManagement.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20190915030318_Extend_IdentityUser")]
+    [Migration("20190915035232_Extend_IdentityUser")]
     partial class Extend_IdentityUser
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
