@@ -23,9 +23,22 @@
         <h5 class="card-title">@user.UserName</h5>
     </div>
     <div class="card-footer">
-        <a asp-action="EditUser" asp-controller="Admin"
-           asp-route-id="@user.Id" class="btn btn-primary">编辑</a>
-        <a href="#" class="btn btn-danger">删除</a>
+        <form method="post" asp-action="DeleteUser" asp-route-id="@user.Id">
+            <a asp-action="EditUser" asp-controller="Admin"
+               asp-route-id="@user.Id" class="btn btn-primary">编辑</a>
+
+            <span id="confirmDeleteSpan_@user.Id" style="display:none">
+                <span>你确定你要删除?</span>
+                <button type="submit" class="btn btn-danger">是</button>
+                <a href="#" class="btn btn-primary"
+                   onclick="confirmDelete('@user.Id', false)">否</a>
+            </span>
+
+            <span id="deleteSpan_@user.Id">
+                <a href="#" class="btn btn-danger"
+                   onclick="confirmDelete('@user.Id', true)">删除</a>
+            </span>
+        </form>
     </div>
 </div>
     }
@@ -46,4 +59,10 @@ else
         </a>
     </div>
 </div>
+}
+
+
+
+@section Scripts {
+    <script src="~/js/CustomScript.js"></script>
 }
