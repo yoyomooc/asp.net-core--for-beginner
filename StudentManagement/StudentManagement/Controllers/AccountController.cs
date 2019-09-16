@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using StudentManagement.Models;
 using StudentManagement.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -13,10 +14,10 @@ namespace StudentManagement.Controllers
 
     [AllowAnonymous]
     public class AccountController:Controller   {
-        private UserManager<IdentityUser> userManager;
-        private SignInManager<IdentityUser> signInManager;
+        private UserManager<ApplicationUser> userManager;
+        private SignInManager<ApplicationUser> signInManager;
 
-        public AccountController(UserManager<IdentityUser> userManager,SignInManager<IdentityUser> signInManager)
+        public AccountController(UserManager<ApplicationUser> userManager,SignInManager<ApplicationUser> signInManager)
         {
 
             this.userManager = userManager;
@@ -38,10 +39,12 @@ namespace StudentManagement.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new IdentityUser
+                var user = new ApplicationUser
                 {
                     UserName = model.Email,
-                    Email = model.Email
+                    Email = model.Email,
+                    City=model.City
+                    
                 };
 
                 var result = await userManager.CreateAsync(user, model.Password);
@@ -80,7 +83,7 @@ namespace StudentManagement.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> Login(LoginViewModel model)
+        public async Task<IActionResult> Login(LoginViewModel model,string returnUrl)
         {
             if (ModelState.IsValid)
             {
@@ -89,7 +92,27 @@ namespace StudentManagement.Controllers
 
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("Index", "home");
+                    if (!string.IsNullOrEmpty(returnUrl))
+                    {
+                        //防止开放式重定向攻击
+                        if (Url.IsLocalUrl(returnUrl))
+                        {
+                            return Redirect(returnUrl);
+                        }
+                        else
+                        {
+                         //   ModelState.AddModelError(string.Empty, "防止开放式重定向攻击");
+                         return RedirectToAction("Index", "home");
+                        }
+
+                    }
+                    else
+                    {
+                        return RedirectToAction("Index", "home");
+                    }
+
+
+                   
                 }
                 ModelState.AddModelError(string.Empty, "登录失败，请重试");
             }
@@ -113,6 +136,29 @@ namespace StudentManagement.Controllers
 
 
         }
+
+
+        [AcceptVerbs("Get","Post")]
+        [AllowAnonymous]
+        public async Task<IActionResult> IsEmailInUse(string email)
+        {
+
+            var user = await userManager.FindByEmailAsync(email);
+
+            if (user ==null)
+            {
+                return Json(true);
+            }
+            else
+            {
+
+                return Json($"邮箱：{email}已经被注册使用了。");
+
+            }
+
+
+        }
+
 
 
     }

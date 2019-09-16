@@ -24,11 +24,11 @@
 
 </head>
 <body>
- 
+
 
     <div class="container">
         @using Microsoft.AspNetCore.Identity
-        @inject  SignInManager<IdentityUser> SignInManager
+        @inject SignInManager<ApplicationUser> SignInManager
         <nav class="navbar navbar-expand-sm  bg-dark navbar-dark ">
 
             <a class="navbar-brand" asp-controller="home" asp-action="index">
@@ -38,7 +38,7 @@
                 <span class="navbar-toggler-icon"></span>
 
             </button>
-        
+
 
 
             <div id="collapsibleNavbar" class="collapse navbar-collapse">
@@ -57,11 +57,11 @@
                     @if (SignInManager.IsSignedIn(User))
                     {
 
-                    <li class="nav-item">
-                        <form asp-controller="account" asp-action="logout" method="post">                           
-                            <button type="submit" style="width:auto" class="nav-link btn btn-link py-0">注销 @User.Identity.Name</button>
-                         </form>                     
-                    </li>
+                        <li class="nav-item">
+                            <form asp-controller="account" asp-action="logout" method="post">
+                                <button type="submit" style="width:auto" class="nav-link btn btn-link py-0">注销 @User.Identity.Name</button>
+                            </form>
+                        </li>
 
                     }
                     else
@@ -90,11 +90,14 @@
         @RenderBody()
     </div>
 
+     
 
+        <script src="~/lib/jquery/jquery.js" asp-append-version="true"></script>
+        <script src="~/lib/jquery-validate/jquery.validate.js" asp-append-version="true"></script>
+        <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js" asp-append-version="true"></script>
+         
 
-
-    <script src="~/lib/jquery/jquery.js"></script>
-    <script src="~/lib/twitter-bootstrap/js/bootstrap.js"></script>
+    <script src="~/lib/twitter-bootstrap/js/bootstrap.js" asp-append-version="true"></script>
 
     @RenderSection("Scripts", required: false)
 

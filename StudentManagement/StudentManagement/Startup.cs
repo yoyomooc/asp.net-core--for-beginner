@@ -48,7 +48,7 @@ namespace StudentManagement
             });
 
 
-            services.AddIdentity<IdentityUser, IdentityRole>()
+            services.AddIdentity<ApplicationUser, IdentityRole>()
                .AddErrorDescriber<CustomIdentityErrorDescriber>()
                 .AddEntityFrameworkStores<AppDbContext>();
 

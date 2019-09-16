@@ -12,8 +12,8 @@
       "commandName": "IISExpress",
       "launchBrowser": true,
       "environmentVariables": {
-      // "ASPNETCORE_ENVIRONMENT": "Development",
-        "ASPNETCORE_ENVIRONMENT": "Production",
+        // "ASPNETCORE_ENVIRONMENT": "Development",
+        "ASPNETCORE_ENVIRONMENT": "Development",
         "MyKey": "appsetting.launchSetting.json MyKey "
       },
     
