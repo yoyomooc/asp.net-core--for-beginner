@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using StudentManagement.Models;
 using StudentManagement.ViewModels;
@@ -9,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace StudentManagement.Controllers
 {
+    [Authorize(Roles ="Admin")]
     public class AdminController:Controller
     {
         private RoleManager<IdentityRole> roleManager;

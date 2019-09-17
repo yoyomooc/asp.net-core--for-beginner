@@ -11,6 +11,7 @@ using System.IO;
 namespace StudentManagement.Controllers
 {
 
+    [AllowAnonymous]
     public class HomeController : Controller
     {
         private readonly IStudentRepository _studentRepository;
