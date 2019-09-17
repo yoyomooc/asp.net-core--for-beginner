@@ -48,6 +48,13 @@ namespace StudentManagement
             });
 
 
+            services.ConfigureApplicationCookie(options=>
+            {
+                options.AccessDeniedPath = "/Account/fangyu";
+            });
+
+
+
             services.AddIdentity<ApplicationUser, IdentityRole>()
                .AddErrorDescriber<CustomIdentityErrorDescriber>()
                 .AddEntityFrameworkStores<AppDbContext>();

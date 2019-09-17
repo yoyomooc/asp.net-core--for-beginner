@@ -24,7 +24,24 @@ namespace StudentManagement.Controllers
             this.signInManager = signInManager;
         }
 
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult AccessDenied()
+        {
 
+            return View();
+
+        }
+
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult Fangyu()
+        {
+
+            return View();
+
+        }
 
         [HttpGet]
         public IActionResult Register()
