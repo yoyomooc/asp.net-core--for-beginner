@@ -1,0 +1,38 @@
+﻿@model IEnumerable<Student>
+@{
+
+    ViewBag.Title = "学生列表页面";
+       
+
+}
+
+
+ 
+
+<div class="row">
+    @foreach (var student in Model)
+    { var photoPath = "~/images/" + (student.PhotoPath??"noimage.png");
+
+    <div class="col-md-4">
+        <div class="card m-3">
+            <div class="card-header">
+                <h3>@student.Name</h3>
+            </div>
+
+            <img class="card-img-top imagesThumbnail" src="@photoPath" asp-append-version="true" />
+            <div class="card-footer text-center">
+
+                <a asp-controller="home" asp-action="details" asp-route-id="@student.Id" class="btn btn-primary m-1">查看</a>
+
+                <a asp-controller="home" asp-action="edit" asp-route-id="@student.Id" class="btn btn-primary m-1">编辑</a>
+
+
+                <a href="#" class="btn btn-danger m-1">删除</a>
+            </div>
+        </div>
+    </div>
+    }
+</div>
+
+
+
