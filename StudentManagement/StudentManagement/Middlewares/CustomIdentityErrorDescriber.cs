@@ -42,47 +42,47 @@ namespace StudentManagement.Middlewares
 
         public override IdentityError InvalidEmail(string email)
         {
-            return new IdentityError { Code = nameof(InvalidEmail), Description = $"Email '{email}' is invalid." };
+            return new IdentityError { Code = nameof(InvalidEmail), Description = $"邮箱 '{email}' 无效." };
         }
 
         public override IdentityError DuplicateUserName(string userName)
         {
-            return new IdentityError { Code = nameof(DuplicateUserName), Description = $"User Name '{userName}' is already taken." };
+            return new IdentityError { Code = nameof(DuplicateUserName), Description = $"用户名 '{userName}' 已被使用." };
         }
 
         public override IdentityError DuplicateEmail(string email)
         {
-            return new IdentityError { Code = nameof(DuplicateEmail), Description = $"Email '{email}' is already taken." };
+            return new IdentityError { Code = nameof(DuplicateEmail), Description = $"邮箱 '{email}' 已被使用." };
         }
 
         public override IdentityError InvalidRoleName(string role)
         {
-            return new IdentityError { Code = nameof(InvalidRoleName), Description = $"Role name '{role}' is invalid." };
+            return new IdentityError { Code = nameof(InvalidRoleName), Description = $"角色名 '{role}' 无效." };
         }
 
         public override IdentityError DuplicateRoleName(string role)
         {
-            return new IdentityError { Code = nameof(DuplicateRoleName), Description = $"Role name '{role}' is already taken." };
+            return new IdentityError { Code = nameof(DuplicateRoleName), Description = $"角色名 '{role}' 已被使用." };
         }
 
         public override IdentityError UserAlreadyHasPassword()
         {
-            return new IdentityError { Code = nameof(UserAlreadyHasPassword), Description = "User already has a password set." };
+            return new IdentityError { Code = nameof(UserAlreadyHasPassword), Description = "该用户已设置了密码." };
         }
 
         public override IdentityError UserLockoutNotEnabled()
         {
-            return new IdentityError { Code = nameof(UserLockoutNotEnabled), Description = "Lockout is not enabled for this user." };
+            return new IdentityError { Code = nameof(UserLockoutNotEnabled), Description = "此用户未启用锁定." };
         }
 
         public override IdentityError UserAlreadyInRole(string role)
         {
-            return new IdentityError { Code = nameof(UserAlreadyInRole), Description = $"User already in role '{role}'." };
+            return new IdentityError { Code = nameof(UserAlreadyInRole), Description = $"用户已关联角色 '{role}'." };
         }
 
         public override IdentityError UserNotInRole(string role)
         {
-            return new IdentityError { Code = nameof(UserNotInRole), Description = $"User is not in role '{role}'." };
+            return new IdentityError { Code = nameof(UserNotInRole), Description = $"用户未关联角色 '{role}'." };
         }
 
         public override IdentityError PasswordTooShort(int length)
