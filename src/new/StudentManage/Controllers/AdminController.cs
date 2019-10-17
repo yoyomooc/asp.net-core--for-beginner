@@ -5,7 +5,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using StudentManagement.Models;
 using StudentManagement.ViewModels;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -19,22 +18,21 @@ namespace StudentManagement.Controllers
         private readonly UserManager<ApplicationUser> userManager;
         private readonly ILogger<AdminController> logger;
 
-        public AdminController(RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager,ILogger<AdminController> logger)
+        public AdminController(RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager, ILogger<AdminController> logger)
         {
             this.roleManager = roleManager;
             this.userManager = userManager;
             this.logger = logger;
-
         }
 
         #region 角色管理
+
         [HttpGet]
         public IActionResult ListRoles()
         {
             var roles = roleManager.Roles;
             return View(roles);
         }
-
 
         [HttpGet]
         public IActionResult CreateRole()
@@ -71,8 +69,6 @@ namespace StudentManagement.Controllers
 
             return View(model);
         }
-
-
 
         //  角色ID从URL传递给操作方法
 
@@ -141,8 +137,6 @@ namespace StudentManagement.Controllers
             }
         }
 
-
-
         [HttpGet]
         public async Task<IActionResult> EditUsersInRole(string roleId)
         {
@@ -180,7 +174,6 @@ namespace StudentManagement.Controllers
 
             return View(model);
         }
-
 
         [HttpPost]
         public async Task<IActionResult> EditUsersInRole(List<UserRoleViewModel> model, string roleId)
@@ -224,7 +217,6 @@ namespace StudentManagement.Controllers
             return RedirectToAction("EditRole", new { Id = roleId });
         }
 
-
         [HttpPost]
         public async Task<IActionResult> DeleteRole(string id)
         {
@@ -234,8 +226,7 @@ namespace StudentManagement.Controllers
             {
                 ViewBag.ErrorMessage = $"无法找到ID为{id}的角色信息";
 
-            
-            return View("NotFound");
+                return View("NotFound");
             }
             else
             {
@@ -257,15 +248,13 @@ namespace StudentManagement.Controllers
                     }
 
                     return View("ListRoles");
-
                 }
                 ////如果是DbUpdateException的异常，
                 ///我们知道我们无法 删除角色，因为该角色中有用户
                 catch (DbUpdateException ex)
                 {
-
                     //  将异常记录到文件中。
-                    //我们在ASP.NET Core 入门 第63节中 讨论了如何将日志记录到文件中 
+                    //我们在ASP.NET Core 入门 第63节中 讨论了如何将日志记录到文件中
                     logger.LogError($"发生异常 : {ex}");
                     //传递您想要显示的ErrorTitle和ErrorMessage
                     //使用ViewBag将错误标题和信息传递到Error视图中。
@@ -274,28 +263,20 @@ namespace StudentManagement.Controllers
                     ViewBag.ErrorMessage = $"{role.Name} 无法删除角色，因为此角色中有用户。如果您想删除此角色，请从该角色中先移除用户，然后再尝试删除角色";
                     return View("Error");
                 }
-
-                
-
-                
             }
         }
 
-
-
-
-        #endregion
-
-
-
+        #endregion 角色管理
 
         #region 用户管理
+
         [HttpGet]
         public IActionResult ListUsers()
         {
             var users = userManager.Users;
             return View(users);
         }
+
         [HttpGet]
         public async Task<IActionResult> EditUser(string id)
         {
@@ -357,8 +338,6 @@ namespace StudentManagement.Controllers
             }
         }
 
-
-
         [HttpPost]
         public async Task<IActionResult> DeleteUser(string id)
         {
@@ -387,8 +366,80 @@ namespace StudentManagement.Controllers
             }
         }
 
-        #endregion
+        #endregion 用户管理
 
+        #region 管理用户角色
 
+        [HttpGet]
+        public async Task<IActionResult> ManageUserRoles(string userId)
+        {
+            ViewBag.userId = userId;
+
+            var user = await userManager.FindByIdAsync(userId);
+
+            if (user == null)
+            {
+                ViewBag.ErrorMessage = $"无法找到Id = {userId}的用户";
+                return View("NotFound");
+            }
+
+            var model = new List<UserRolesViewModel>();
+
+            foreach (var role in roleManager.Roles)
+            {
+                var userRolesViewModel = new UserRolesViewModel
+                {
+                    RoleId = role.Id,
+                    RoleName = role.Name
+                };
+
+                if (await userManager.IsInRoleAsync(user, role.Name))
+                {
+                    userRolesViewModel.IsSelected = true;
+                }
+                else
+                {
+                    userRolesViewModel.IsSelected = false;
+                }
+
+                model.Add(userRolesViewModel);
+            }
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ManageUserRoles(List<UserRolesViewModel> model, string userId)
+        {
+            var user = await userManager.FindByIdAsync(userId);
+
+            if (user == null)
+            {
+                ViewBag.ErrorMessage = $"无法找到Id = {userId}的用户";
+                return View("NotFound");
+            }
+
+            var roles = await userManager.GetRolesAsync(user);
+            var result = await userManager.RemoveFromRolesAsync(user, roles);
+
+            if (!result.Succeeded)
+            {
+                ModelState.AddModelError("", "无法删除用户现有角色");
+                return View(model);
+            }
+
+            result = await userManager.AddToRolesAsync(user,
+                model.Where(x => x.IsSelected).Select(y => y.RoleName));
+
+            if (!result.Succeeded)
+            {
+                ModelState.AddModelError("", "无法向用户添加选定的角色");
+                return View(model);
+            }
+
+            return RedirectToAction("EditUser", new { Id = userId });
+        }
+
+        #endregion 管理用户角色
     }
 }
