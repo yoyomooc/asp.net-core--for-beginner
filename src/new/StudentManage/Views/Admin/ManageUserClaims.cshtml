@@ -1,6 +1,5 @@
-﻿ 
-@{
-    
+﻿@{
+
     ViewBag.Title = "管理用户声明";
 }
 
@@ -16,9 +15,10 @@
             {
                 <div class="form-check m-1">
                     <input type="hidden" asp-for="@Model.Cliams[i].ClaimType" />
+                    <input type="hidden" asp-for="@Model.Cliams[i].ClaimValue" />
                     <input asp-for="@Model.Cliams[i].IsSelected" class="form-check-input" />
                     <label class="form-check-label" asp-for="@Model.Cliams[i].IsSelected">
-                        @Model.Cliams[i].ClaimType
+                        @Model.Cliams[i].ClaimValue
                     </label>
                 </div>
             }

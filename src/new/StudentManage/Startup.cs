@@ -38,7 +38,6 @@ namespace StudentManagement
                 options.Password.RequireNonAlphanumeric = false;
             });
 
-
             services.ConfigureApplicationCookie(options =>
             {
                 //   options.AccessDeniedPath = "/Identity/Account/AccessDenied";
@@ -46,7 +45,7 @@ namespace StudentManagement
                 options.Cookie.HttpOnly = true;
                 options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
                 //   options.LoginPath = "/Identity/Account/Login";
-                // ReturnUrlParameter requires 
+                // ReturnUrlParameter requires
                 //using Microsoft.AspNetCore.Authentication.Cookies;
                 options.ReturnUrlParameter = CookieAuthenticationDefaults.ReturnUrlParameter;
                 options.SlidingExpiration = true;
@@ -56,6 +55,19 @@ namespace StudentManagement
                 .AddErrorDescriber<CustomIdentityErrorDescriber>()
                 .AddEntityFrameworkStores<AppDbContext>();
 
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("DeleteRolePolicy",
+                    policy => policy.RequireClaim("Delete Role"));
+                 options.AddPolicy("AdminRolePolicy",
+                    policy => policy.RequireRole("Admin"));
+                options.AddPolicy("EditRolePolicy", 
+                    policy => policy.RequireClaim("Edit Role"));
+
+
+
+            });
+
             services.AddMvc(config =>
             {
                 var policy = new AuthorizationPolicyBuilder()
@@ -63,8 +75,6 @@ namespace StudentManagement
                                 .Build();
                 config.Filters.Add(new AuthorizeFilter(policy));
             }).AddXmlSerializerFormatters();
-
-
 
             services.AddScoped<IStudentRepository, SQLStudentRepository>();
         }

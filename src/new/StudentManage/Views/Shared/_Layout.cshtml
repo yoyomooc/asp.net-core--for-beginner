@@ -7,24 +7,20 @@
     <environment include="Development">
         <link href="~/lib/twitter-bootstrap/css/bootstrap.css" rel="stylesheet" />
     </environment>
-   
+
     <environment exclude="Development">
-        <link rel="stylesheet" 
+        <link rel="stylesheet"
               integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"
               href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
               asp-fallback-href="~/lib/twitter-bootstrap/css/bootstrap.min.css"
-            asp-fallback-test-class="sr-only"
-            asp-fallback-test-property="position"
-            asp-fallback-test-value="absolute"   >
-
+              asp-fallback-test-class="sr-only"
+              asp-fallback-test-property="position"
+              asp-fallback-test-value="absolute">
     </environment>
 
     <link href="~/css/site.css" rel="stylesheet" />
-
-
 </head>
 <body>
-
 
     <div class="container">
 
@@ -35,11 +31,11 @@
             </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
                 <span class="navbar-toggler-icon"></span>
-
             </button>
 
             @using Microsoft.AspNetCore.Identity
             @inject SignInManager<ApplicationUser> SignInManager
+
             <div id="collapsibleNavbar" class="collapse navbar-collapse">
                 <ul class="navbar-nav">
                     <li class="nav-item">
@@ -93,19 +89,10 @@
                     }
                 </ul>
             </div>
-
-
-
-
         </nav>
-
-
 
         @RenderBody()
     </div>
-
-
-
 
     <script src="~/lib/jquery/jquery.js"></script>
     <script src="~/lib/jquery-validate/jquery.validate.js"></script>
@@ -113,8 +100,6 @@
     <script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>
     <script src="~/lib/twitter-bootstrap/js/bootstrap.js"></script>
 
-
     @RenderSection("Scripts", required: false)
-
 </body>
 </html>

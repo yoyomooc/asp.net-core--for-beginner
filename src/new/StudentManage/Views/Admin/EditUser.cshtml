@@ -52,16 +52,16 @@
             {
                 foreach (var role in Model.Roles)
                 {
-            <h5 class="card-title">@role</h5>
+                    <h5 class="card-title">@role</h5>
                 }
             }
             else
             {
-        <h5 class="card-title">目前没有</h5>
+                <h5 class="card-title">目前没有</h5>
             }
         </div>
         <div class="card-footer">
-            <a asp-action="ManageUserRoles" asp-route-userId="@Model.Id"  class="btn btn-primary">
+            <a asp-action="ManageUserRoles" asp-route-userId="@Model.Id" class="btn btn-primary">
                 管理角色
             </a>
         </div>
@@ -76,12 +76,12 @@
             {
                 foreach (var claim in Model.Claims)
                 {
-            <h5 class="card-title">@claim</h5>
+                    <h5 class="card-title">@claim</h5>
                 }
             }
             else
             {
-            <h5 class="card-title">目前没有</h5>
+                <h5 class="card-title">目前没有</h5>
             }
         </div>
         <div class="card-footer">

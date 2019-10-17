@@ -1,10 +1,11 @@
 ﻿@model IEnumerable<IdentityRole>
-
 @{
     ViewBag.Title = "角色列表";
 }
 
 <h1>所有角色列表</h1>
+
+
 
 @if (Model.Any())
 {
@@ -23,10 +24,14 @@
             <div class="card-footer">
 
                 <form method="post" asp-action="DeleteRole" asp-route-id="@role.Id">
-                    <a asp-controller="Admin" asp-action="EditRole"
-                       asp-route-id="@role.Id" class="btn btn-primary">
-                        编辑
-                    </a>
+
+                    @if ((await authorizationService.AuthorizeAsync(User, "EditRolePolicy")).Succeeded)
+                    {
+                        <a asp-controller="Admin" asp-action="EditRole"
+                           asp-route-id="@role.Id" class="btn btn-primary">
+                            编辑
+                        </a>
+                    }
 
                     <span id="confirmDeleteSpan_@role.Id" style="display:none">
                         <span>你确定你要删除?</span>
@@ -40,8 +45,6 @@
                            onclick="confirmDelete('@role.Id', true)">删除</a>
                     </span>
                 </form>
-
-
             </div>
         </div>
     }
@@ -63,7 +66,6 @@ else
         </div>
     </div>
 }
-
 
 @section Scripts {
     <script src="~/js/CustomScript.js"></script>

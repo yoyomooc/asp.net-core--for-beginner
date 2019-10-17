@@ -12,7 +12,8 @@ using System.Threading.Tasks;
 
 namespace StudentManagement.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "Admin")]
+    [Authorize(Policy = "AdminRolePolicy")]
     public class AdminController : Controller
     {
         private readonly RoleManager<IdentityRole> roleManager;
@@ -74,6 +75,7 @@ namespace StudentManagement.Controllers
         //  角色ID从URL传递给操作方法
 
         [HttpGet]
+        [Authorize(Policy = "EditRolePolicy")]
         public async Task<IActionResult> EditRole(string id)
         {
             //通过角色ID查找角色
@@ -107,7 +109,7 @@ namespace StudentManagement.Controllers
         }
 
         //此操作方法用于响应HttpPost的请求并接收EditRoleViewModel模型数据
-        [HttpPost]
+        [HttpPost]       
         public async Task<IActionResult> EditRole(EditRoleViewModel model)
         {
             var role = await roleManager.FindByIdAsync(model.Id);
@@ -219,6 +221,7 @@ namespace StudentManagement.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "DeleteRolePolicy")]
         public async Task<IActionResult> DeleteRole(string id)
         {
             var role = await roleManager.FindByIdAsync(id);
@@ -443,8 +446,6 @@ namespace StudentManagement.Controllers
 
         #endregion 管理用户角色
 
-
-
         #region 管理用户声明
 
         [HttpGet]
@@ -471,13 +472,13 @@ namespace StudentManagement.Controllers
             {
                 UserClaim userClaim = new UserClaim
                 {
-                    ClaimType = claim.Type
+                    ClaimType = claim.Type,
+                    ClaimValue = claim.Value
                 };
 
-
                 //如果用户有此声明，则将IsSelected属性设置为true，
-                //则会在用户界面上选中该声明的复选框                 
-              
+                //则会在用户界面上选中该声明的复选框
+
                 if (existingUserClaims.Any(c => c.Type == claim.Type))
                 {
                     userClaim.IsSelected = true;
@@ -487,9 +488,7 @@ namespace StudentManagement.Controllers
             }
 
             return View(model);
-
         }
-
 
         [HttpPost]
         public async Task<IActionResult> ManageUserClaims(UserClaimsViewModel model)
@@ -512,10 +511,10 @@ namespace StudentManagement.Controllers
                 return View(model);
             }
 
-            //  
+            //
             // 将选中的声明添加到用户中
             result = await userManager.AddClaimsAsync(user,
-                model.Cliams.Where(c => c.IsSelected).Select(c => new Claim(c.ClaimType, c.ClaimType)));
+                model.Cliams.Where(c => c.IsSelected).Select(c => new Claim(c.ClaimType, c.ClaimValue)));
 
             if (!result.Succeeded)
             {
@@ -524,11 +523,8 @@ namespace StudentManagement.Controllers
             }
 
             return RedirectToAction("EditUser", new { Id = model.UserId });
-
         }
 
-
-        #endregion
-
+        #endregion 管理用户声明
     }
 }
