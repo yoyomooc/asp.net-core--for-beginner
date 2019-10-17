@@ -526,5 +526,22 @@ namespace StudentManagement.Controllers
         }
 
         #endregion 管理用户声明
+
+
+        #region 授权失败
+
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
+
+
+        #endregion
+
+
+
     }
 }

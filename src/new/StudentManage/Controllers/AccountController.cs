@@ -140,12 +140,6 @@ namespace StudentManagement.Controllers
         }
 
 
-        [HttpGet]
-        [AllowAnonymous]
-        public IActionResult AccessDenied()
-        {
-            return View();
-        }
 
 
     }
