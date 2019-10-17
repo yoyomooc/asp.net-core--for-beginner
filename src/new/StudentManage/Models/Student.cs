@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace StudentManagement.Models
+﻿namespace StudentManagement.Models
 {
 
     public class Student

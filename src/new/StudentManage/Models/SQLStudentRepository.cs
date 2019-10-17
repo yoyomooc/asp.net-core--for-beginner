@@ -1,8 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace StudentManagement.Models
 {
@@ -33,7 +30,7 @@ namespace StudentManagement.Models
         {
             Student student = context.Students.Find(id);
 
-            if (student!=null)
+            if (student != null)
             {
                 context.Students.Remove(student);
                 context.SaveChanges();

@@ -2,18 +2,14 @@
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace StudentManagement.Controllers
 {
-    public class ErrorController:Controller
+    public class ErrorController : Controller
     {
         private ILogger<ErrorController> logger;
 
-        
+
         /// <summary>
         /// 注入ASP.NET Core ILogger服务。
         /// 将控制器类型指定为泛型参数。
@@ -27,7 +23,7 @@ namespace StudentManagement.Controllers
         }
 
 
-        [AllowAnonymous] 
+        [AllowAnonymous]
         [Route("Error")]
         public IActionResult Error()
         {
@@ -64,6 +60,6 @@ namespace StudentManagement.Controllers
         }
 
 
-   
+
     }
 }

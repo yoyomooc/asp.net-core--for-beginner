@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace StudentManagement.Models
 {
@@ -29,23 +27,23 @@ namespace StudentManagement.Models
             return student;
         }
 
-   
+
 
         public IEnumerable<Student> GetAllStudents()
         {
             return _studentList;
-           
+
         }
 
         public Student GetStudent(int id)
         {
-            return    _studentList.FirstOrDefault(a => a.Id == id);
+            return _studentList.FirstOrDefault(a => a.Id == id);
         }
         public Student Delete(int id)
         {
-          Student student=  _studentList.FirstOrDefault(s => s.Id == id);
+            Student student = _studentList.FirstOrDefault(s => s.Id == id);
 
-            if (student!=null)
+            if (student != null)
             {
                 _studentList.Remove(student);
 

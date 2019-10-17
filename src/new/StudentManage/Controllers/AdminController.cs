@@ -1,20 +1,21 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using StudentManagement.Models;
 using StudentManagement.ViewModels;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace StudentManagement.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class AdminController : Controller
     {
         private readonly RoleManager<IdentityRole> roleManager;
         private readonly UserManager<ApplicationUser> userManager;
 
-        public AdminController(RoleManager<IdentityRole> roleManager,UserManager<ApplicationUser> userManager)
+        public AdminController(RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager)
         {
             this.roleManager = roleManager;
             this.userManager = userManager;
@@ -29,7 +30,7 @@ namespace StudentManagement.Controllers
             return View(roles);
         }
 
-       
+
         [HttpGet]
         public IActionResult CreateRole()
         {
@@ -227,7 +228,9 @@ namespace StudentManagement.Controllers
             if (role == null)
             {
                 ViewBag.ErrorMessage = $"无法找到ID为{id}的角色信息";
-                return View("NotFound");
+
+            
+            return View("NotFound");
             }
             else
             {
@@ -255,13 +258,13 @@ namespace StudentManagement.Controllers
 
 
 
-                #region 用户管理
+        #region 用户管理
         [HttpGet]
-    public IActionResult ListUsers()
-    {
-        var users = userManager.Users;
-        return View(users);
-    }
+        public IActionResult ListUsers()
+        {
+            var users = userManager.Users;
+            return View(users);
+        }
         [HttpGet]
         public async Task<IActionResult> EditUser(string id)
         {

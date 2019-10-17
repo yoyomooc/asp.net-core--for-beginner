@@ -1,19 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StudentManagement.ViewModels;
+using System;
+using System.Diagnostics;
+using System.Threading.Tasks;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace StudentManagement.Controllers
 {
 
-    
-    public class DepartmentsController: Controller
+
+    public class DepartmentsController : Controller
     {
         public string List()
         {
@@ -24,7 +22,7 @@ namespace StudentManagement.Controllers
 
                 return "IsAttached() 方法。";
 
-            }         
+            }
 
             return "DepartmentsController中的List() 方法。";
         }
@@ -47,11 +45,11 @@ namespace StudentManagement.Controllers
         }
 
 
-        [Authorize(Roles ="admin")]
+        [Authorize(Roles = "admin")]
 
         public async Task<IActionResult> Login(LoginViewModel model, string returnUrl)
         {
-                                  
+
 
             if (Url.IsLocalUrl(returnUrl))
             {

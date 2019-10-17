@@ -86,7 +86,10 @@ namespace StudentManagement.Middleware
 
         public override IdentityError PasswordRequiresNonAlphanumeric()
         {
-            return new IdentityError { Code = nameof(PasswordRequiresNonAlphanumeric), Description = "密码必须至少有一个非字母数字字符."
+            return new IdentityError
+            {
+                Code = nameof(PasswordRequiresNonAlphanumeric),
+                Description = "密码必须至少有一个非字母数字字符."
             };
         }
 

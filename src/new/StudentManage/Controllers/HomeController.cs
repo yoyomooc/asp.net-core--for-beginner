@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using StudentManagement.Models;
@@ -9,6 +10,8 @@ using System.IO;
 
 namespace StudentManagement.Controllers
 {
+
+    [AllowAnonymous]
     public class HomeController : Controller
     {
         private readonly IStudentRepository _studentRepository;

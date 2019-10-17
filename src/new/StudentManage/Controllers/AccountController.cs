@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace StudentManagement.Controllers
 {
+    [AllowAnonymous]
     public class AccountController : Controller
     {
         private UserManager<ApplicationUser> userManager;
@@ -20,7 +21,7 @@ namespace StudentManagement.Controllers
         }
 
         [HttpGet]
-        [AllowAnonymous]
+
         public IActionResult Register()
         {
             return View();
@@ -37,7 +38,7 @@ namespace StudentManagement.Controllers
                 {
                     UserName = model.Email,
                     Email = model.Email,
-                     City = model.City
+                    City = model.City
                 };
 
                 //将用户数据存储在AspNetUsers数据库表中
@@ -65,8 +66,8 @@ namespace StudentManagement.Controllers
                 //将由验证摘要标记助手显示到视图中
                 foreach (var error in result.Errors)
                 {
-                     
-                                     
+
+
 
                     ModelState.AddModelError(string.Empty, error.Description);
                 }

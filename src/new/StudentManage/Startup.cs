@@ -41,11 +41,11 @@ namespace StudentManagement
 
             services.ConfigureApplicationCookie(options =>
             {
-             //   options.AccessDeniedPath = "/Identity/Account/AccessDenied";
-             //   options.Cookie.Name = "YourAppCookieName";
+                //   options.AccessDeniedPath = "/Identity/Account/AccessDenied";
+                //   options.Cookie.Name = "YourAppCookieName";
                 options.Cookie.HttpOnly = true;
                 options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
-             //   options.LoginPath = "/Identity/Account/Login";
+                //   options.LoginPath = "/Identity/Account/Login";
                 // ReturnUrlParameter requires 
                 //using Microsoft.AspNetCore.Authentication.Cookies;
                 options.ReturnUrlParameter = CookieAuthenticationDefaults.ReturnUrlParameter;
@@ -56,7 +56,8 @@ namespace StudentManagement
                 .AddErrorDescriber<CustomIdentityErrorDescriber>()
                 .AddEntityFrameworkStores<AppDbContext>();
 
-            services.AddMvc(config => {
+            services.AddMvc(config =>
+            {
                 var policy = new AuthorizationPolicyBuilder()
                                 .RequireAuthenticatedUser()
                                 .Build();
