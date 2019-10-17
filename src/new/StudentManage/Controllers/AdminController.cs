@@ -1,8 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using StudentManagement.Models;
 using StudentManagement.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -14,11 +17,13 @@ namespace StudentManagement.Controllers
     {
         private readonly RoleManager<IdentityRole> roleManager;
         private readonly UserManager<ApplicationUser> userManager;
+        private readonly ILogger<AdminController> logger;
 
-        public AdminController(RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager)
+        public AdminController(RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager,ILogger<AdminController> logger)
         {
             this.roleManager = roleManager;
             this.userManager = userManager;
+            this.logger = logger;
 
         }
 
@@ -234,19 +239,45 @@ namespace StudentManagement.Controllers
             }
             else
             {
-                var result = await roleManager.DeleteAsync(role);
-
-                if (result.Succeeded)
+                //将代码包装在try / catch块中
+                try
                 {
-                    return RedirectToAction("ListRoles");
+                    //throw new Exception("测试异常内容");
+
+                    var result = await roleManager.DeleteAsync(role);
+
+                    if (result.Succeeded)
+                    {
+                        return RedirectToAction("ListRoles");
+                    }
+
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError("", error.Description);
+                    }
+
+                    return View("ListRoles");
+
+                }
+                ////如果是DbUpdateException的异常，
+                ///我们知道我们无法 删除角色，因为该角色中有用户
+                catch (DbUpdateException ex)
+                {
+
+                    //  将异常记录到文件中。
+                    //我们在ASP.NET Core 入门 第63节中 讨论了如何将日志记录到文件中 
+                    logger.LogError($"发生异常 : {ex}");
+                    //传递您想要显示的ErrorTitle和ErrorMessage
+                    //使用ViewBag将错误标题和信息传递到Error视图中。
+
+                    ViewBag.ErrorTitle = $"{role.Name} 角色正在被使用中";
+                    ViewBag.ErrorMessage = $"{role.Name} 无法删除角色，因为此角色中有用户。如果您想删除此角色，请从该角色中先移除用户，然后再尝试删除角色";
+                    return View("Error");
                 }
 
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError("", error.Description);
-                }
+                
 
-                return View("ListRoles");
+                
             }
         }
 

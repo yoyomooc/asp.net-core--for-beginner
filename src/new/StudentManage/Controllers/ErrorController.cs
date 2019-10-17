@@ -28,6 +28,7 @@ namespace StudentManagement.Controllers
         public IActionResult Error()
         {
             // 获取异常详情信息
+            
             var exceptionHandlerPathFeature =
                     HttpContext.Features.Get<IExceptionHandlerPathFeature>();
 
