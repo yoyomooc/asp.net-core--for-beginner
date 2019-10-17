@@ -7,6 +7,7 @@ using StudentManagement.Models;
 using StudentManagement.ViewModels;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace StudentManagement.Controllers
@@ -441,5 +442,93 @@ namespace StudentManagement.Controllers
         }
 
         #endregion 管理用户角色
+
+
+
+        #region 管理用户声明
+
+        [HttpGet]
+        public async Task<IActionResult> ManageUserClaims(string userId)
+        {
+            var user = await userManager.FindByIdAsync(userId);
+
+            if (user == null)
+            {
+                ViewBag.ErrorMessage = $"无法找到Id = {userId}的用户";
+                return View("NotFound");
+            }
+
+            // UserManager中的GetClaimsAsync方法可以获取用户当前的所有声明
+            var existingUserClaims = await userManager.GetClaimsAsync(user);
+
+            var model = new UserClaimsViewModel
+            {
+                UserId = userId
+            };
+
+            // 循环遍历应用程序中的每个声明
+            foreach (Claim claim in ClaimsStore.AllClaims)
+            {
+                UserClaim userClaim = new UserClaim
+                {
+                    ClaimType = claim.Type
+                };
+
+
+                //如果用户有此声明，则将IsSelected属性设置为true，
+                //则会在用户界面上选中该声明的复选框                 
+              
+                if (existingUserClaims.Any(c => c.Type == claim.Type))
+                {
+                    userClaim.IsSelected = true;
+                }
+
+                model.Cliams.Add(userClaim);
+            }
+
+            return View(model);
+
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> ManageUserClaims(UserClaimsViewModel model)
+        {
+            var user = await userManager.FindByIdAsync(model.UserId);
+
+            if (user == null)
+            {
+                ViewBag.ErrorMessage = $" 用户id为{model.UserId}无法找到。";
+                return View("NotFound");
+            }
+
+            // 获取用户已经拥有的声明，然后删除它们
+            var claims = await userManager.GetClaimsAsync(user);
+            var result = await userManager.RemoveClaimsAsync(user, claims);
+
+            if (!result.Succeeded)
+            {
+                ModelState.AddModelError("", "无法删除用户现有的声明");
+                return View(model);
+            }
+
+            //  
+            // 将选中的声明添加到用户中
+            result = await userManager.AddClaimsAsync(user,
+                model.Cliams.Where(c => c.IsSelected).Select(c => new Claim(c.ClaimType, c.ClaimType)));
+
+            if (!result.Succeeded)
+            {
+                ModelState.AddModelError("", "无法向用户添加选中的声明");
+                return View(model);
+            }
+
+            return RedirectToAction("EditUser", new { Id = model.UserId });
+
+        }
+
+
+        #endregion
+
     }
 }
