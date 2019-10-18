@@ -94,6 +94,7 @@ namespace StudentManagement
 
             services.AddSingleton<IAuthorizationHandler,CanEditOnlyOtherAdminRolesAndClaimsHandler>();
             services.AddSingleton<IAuthorizationHandler, SuperAdminHandler>();
+            //asp.net核心中的多个自定义授权处理程序
 
         }
 
