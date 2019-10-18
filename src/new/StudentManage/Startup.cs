@@ -62,11 +62,14 @@ namespace StudentManagement
                  options.AddPolicy("AdminRolePolicy",
                     policy => policy.RequireRole("Admin"));
                 options.AddPolicy("EditRolePolicy", 
-                    policy => policy.RequireClaim("Edit Role"));
+                    policy => policy.RequireClaim("Edit Role","true"));//
 
-
+                //为了满足以下政策，已登录用户的Conutry的值带有 "USA", "India", "UK"之一即可。不要求满足所有
+                options.AddPolicy("AllowedCountryPolicy",
+       policy => policy.RequireClaim("Country", "USA", "India", "UK"));
 
             });
+
 
             services.AddMvc(config =>
             {

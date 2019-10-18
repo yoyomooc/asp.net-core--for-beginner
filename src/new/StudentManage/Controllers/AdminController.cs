@@ -303,7 +303,7 @@ namespace StudentManagement.Controllers
                 Email = user.Email,
                 UserName = user.UserName,
                 City = user.City,
-                Claims = userClaims.Select(c => c.Value).ToList(),
+                Claims = userClaims.Select(c => c.Type+":"+c.Value).ToList(),//显示所有的策略内容
                 Roles = userRoles
             };
 
@@ -479,7 +479,7 @@ namespace StudentManagement.Controllers
                 //如果用户有此声明，则将IsSelected属性设置为true，
                 //则会在用户界面上选中该声明的复选框
 
-                if (existingUserClaims.Any(c => c.Type == claim.Type))
+                if (existingUserClaims.Any(c => c.Type == claim.Type&&c.Value=="true"))
                 {
                     userClaim.IsSelected = true;
                 }
@@ -513,8 +513,12 @@ namespace StudentManagement.Controllers
 
             //
             // 将选中的声明添加到用户中
+            //result = await userManager.AddClaimsAsync(user,
+            //    model.Cliams.Where(c => c.IsSelected).Select(c => new Claim(c.ClaimType, c.ClaimValue)));
+
+
             result = await userManager.AddClaimsAsync(user,
-                model.Cliams.Where(c => c.IsSelected).Select(c => new Claim(c.ClaimType, c.ClaimValue)));
+                model.Cliams.Select(c => new Claim(c.ClaimType, c.IsSelected?"true":"false")));
 
             if (!result.Succeeded)
             {
