@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 namespace StudentManagement.Controllers
 {
     //[Authorize(Roles = "Admin")]
-   // [Authorize(Policy = "AdminRolePolicy")]
+    [Authorize(Policy = "AdminRolePolicy")]
     public class AdminController : Controller
     {
         private readonly RoleManager<IdentityRole> roleManager;
@@ -375,6 +375,8 @@ namespace StudentManagement.Controllers
         #region 管理用户角色
 
         [HttpGet]
+        [Authorize(Policy = "EditRolePolicy")]
+
         public async Task<IActionResult> ManageUserRoles(string userId)
         {
             ViewBag.userId = userId;
@@ -413,6 +415,7 @@ namespace StudentManagement.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "EditRolePolicy")]
         public async Task<IActionResult> ManageUserRoles(List<UserRolesViewModel> model, string userId)
         {
             var user = await userManager.FindByIdAsync(userId);

@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using StudentManagement.Middleware;
 using StudentManagement.Models;
+using StudentManagement.Security;
 using System;
 
 namespace StudentManagement
@@ -62,8 +63,12 @@ namespace StudentManagement
                  options.AddPolicy("AdminRolePolicy",
                     policy => policy.RequireRole("Admin"));
 
-                options.AddPolicy("EditRolePolicy", 
-                    policy => policy.RequireAssertion(context => AuthorizeAccess(context)));
+
+                options.AddPolicy("EditRolePolicy",policy =>
+            policy.AddRequirements(new ManageAdminRolesAndClaimsRequirement()));
+
+                //options.AddPolicy("EditRolePolicy", 
+                //    policy => policy.RequireAssertion(context => AuthorizeAccess(context)));
 
                 //options.AddPolicy("EditRolePolicy", 
                 //    policy => policy.RequireClaim("Edit Role","true"));
@@ -86,6 +91,8 @@ namespace StudentManagement
             }).AddXmlSerializerFormatters();
 
             services.AddScoped<IStudentRepository, SQLStudentRepository>();
+
+            services.AddSingleton<IAuthorizationHandler,CanEditOnlyOtherAdminRolesAndClaimsHandler>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
