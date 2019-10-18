@@ -39,6 +39,10 @@ namespace StudentManagement.Security
                 //Succeed（）方法指定已成功评估需求。
                 context.Succeed(requirement);
             }
+            else
+            {
+             //   context.Fail();
+            }
 
             return Task.CompletedTask;
         }

@@ -67,6 +67,11 @@ namespace StudentManagement
                 options.AddPolicy("EditRolePolicy",policy =>
             policy.AddRequirements(new ManageAdminRolesAndClaimsRequirement()));
 
+                //确认失败后,是否允许调用身份验证处理程序。默认为true。
+                //例如可能正在记录日志。设置为false后，就不会允许了。
+                //   options.InvokeHandlersAfterFailure = false;
+
+
                 //options.AddPolicy("EditRolePolicy", 
                 //    policy => policy.RequireAssertion(context => AuthorizeAccess(context)));
 
@@ -92,9 +97,11 @@ namespace StudentManagement
 
             services.AddScoped<IStudentRepository, SQLStudentRepository>();
 
+            //注册第一个处理程序
             services.AddSingleton<IAuthorizationHandler,CanEditOnlyOtherAdminRolesAndClaimsHandler>();
+            //注册第二个处理程序
             services.AddSingleton<IAuthorizationHandler, SuperAdminHandler>();
-            //asp.net核心中的多个自定义授权处理程序
+            //以上实现了在asp.net core中的多个自定义授权处理程序
 
         }
 
