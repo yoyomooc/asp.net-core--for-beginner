@@ -61,10 +61,16 @@ namespace StudentManagement
                     policy => policy.RequireClaim("Delete Role"));
                  options.AddPolicy("AdminRolePolicy",
                     policy => policy.RequireRole("Admin"));
-                options.AddPolicy("EditRolePolicy", 
-                    policy => policy.RequireClaim("Edit Role","true"));//
 
-                //为了满足以下政策，已登录用户的Conutry的值带有 "USA", "India", "UK"之一即可。不要求满足所有
+                options.AddPolicy("EditRolePolicy", 
+                    policy => policy.RequireAssertion(context => AuthorizeAccess(context)));
+
+                //options.AddPolicy("EditRolePolicy", 
+                //    policy => policy.RequireClaim("Edit Role","true"));
+
+
+
+                //扩展展示：为了满足以下政策，已登录用户的Conutry的值带有 "USA", "India", "UK"之一即可。不要求满足所有
                 options.AddPolicy("AllowedCountryPolicy",
        policy => policy.RequireClaim("Country", "USA", "India", "UK"));
 
@@ -103,5 +109,28 @@ namespace StudentManagement
                 routes.MapRoute("default", "{controller=Home}/{action=Index}/{id?}");
             });
         }
+
+
+        #region 扩展的私有方法
+
+        /// <summary>
+        /// 判断授权访问(私有封装方法)
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
+        private bool AuthorizeAccess(AuthorizationHandlerContext context)
+        {
+            var result= context.User.IsInRole("Admin") &&
+                    context.User.HasClaim(claim => claim.Type == "Edit Role" && claim.Value == "true") ||
+                    context.User.IsInRole("Super Admin");
+
+
+            return result;
+        }
+
+
+        #endregion
+
+
     }
 }

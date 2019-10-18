@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 namespace StudentManagement.Controllers
 {
     //[Authorize(Roles = "Admin")]
-    [Authorize(Policy = "AdminRolePolicy")]
+   // [Authorize(Policy = "AdminRolePolicy")]
     public class AdminController : Controller
     {
         private readonly RoleManager<IdentityRole> roleManager;
