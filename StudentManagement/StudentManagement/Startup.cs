@@ -98,8 +98,12 @@ namespace StudentManagement
 
             }
 
+            //添加用于将HTTP请求重定向到HTTPS的中间件。
+           // app.UseHttpsRedirection();
 
             app.UseStaticFiles();
+            //添加路由
+            app.UseRouting();
 
             app.UseAuthentication();
 

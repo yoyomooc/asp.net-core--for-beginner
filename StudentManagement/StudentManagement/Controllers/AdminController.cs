@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace StudentManagement.Controllers
 {
-    [Authorize(Roles ="Admin")]
+    //[Authorize(Roles ="Admin")]
     public class AdminController:Controller
     {
         private RoleManager<IdentityRole> roleManager;
@@ -181,7 +181,9 @@ namespace StudentManagement.Controllers
                     UserName = user.UserName
                 };
 
-                if (await userManager.IsInRoleAsync(user, role.Name))
+                
+                var res = await userManager.IsInRoleAsync(user, role.Name);
+                if (res)
                 {
                     userRoleViewmodel.IsSelected = true;
                 }
