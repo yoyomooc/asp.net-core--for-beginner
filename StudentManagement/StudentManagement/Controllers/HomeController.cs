@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Hosting.Internal;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using StudentManagement.Models;
@@ -15,17 +15,17 @@ namespace StudentManagement.Controllers
     public class HomeController : Controller
     {
         private readonly IStudentRepository _studentRepository;
-        private readonly HostingEnvironment hostingEnvironment;
+        private readonly IWebHostEnvironment webhostingEnvironment;
         private readonly ILogger logger;
 
 
 
         //使用构造函数注入的方式注入IStudentRepository
-        public HomeController(IStudentRepository studentRepository, HostingEnvironment hostingEnvironment,
+        public HomeController(IStudentRepository studentRepository, IWebHostEnvironment webhostingEnvironment,
             ILogger<HomeController> logger)
         {
             _studentRepository = studentRepository;
-            this.hostingEnvironment = hostingEnvironment;
+            this.webhostingEnvironment = webhostingEnvironment;
             this.logger = logger;
             
         }
@@ -156,7 +156,7 @@ public  IActionResult Edit(StudentEditVidewModel model)
 
                     if (model.ExistingPhotoPath!=null)
                     {
- string filePahth = Path.Combine(hostingEnvironment.WebRootPath, "images", model.ExistingPhotoPath);
+ string filePahth = Path.Combine(webhostingEnvironment.WebRootPath, "images", model.ExistingPhotoPath);
 
                         System.IO.File.Delete(filePahth);
 
@@ -200,7 +200,9 @@ public  IActionResult Edit(StudentEditVidewModel model)
                     //必须将图像上传到wwwroot中的images文件夹
                     //而要获取wwwroot文件夹的路径，我们需要注入 ASP.NET Core提供的HostingEnvironment服务
                     //通过HostingEnvironment服务去获取wwwroot文件夹的路径
-                    string uploadsFolder = Path.Combine(hostingEnvironment.WebRootPath, "images");
+                    string uploadsFolder = Path.Combine(webhostingEnvironment.WebRootPath, "images");
+                   
+
                     //为了确保文件名是唯一的，我们在文件名后附加一个新的GUID值和一个下划线
 
                     uniqueFileName = Guid.NewGuid().ToString() + "_" + photo.FileName;

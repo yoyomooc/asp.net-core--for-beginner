@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using StudentManagement.Middlewares;
 using StudentManagement.Models;
@@ -21,16 +22,21 @@ namespace StudentManagement
 {
     public class Startup
     {
-        private readonly IConfiguration _configuration;
+        public IConfiguration _configuration { get; }
+        public IWebHostEnvironment env { get; }
 
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
             _configuration = configuration;
+            this.env = env;
         }
-       
+
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
-        public void ConfigureServices(IServiceCollection services) {          
+        public void ConfigureServices(IServiceCollection services) {
+
+
+            var builder = services.AddControllersWithViews();
 
 
             services.AddDbContextPool<AppDbContext>(
@@ -75,8 +81,11 @@ namespace StudentManagement
 
 
         // This method gets called by the runtim0e. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+
+
+
             //如果环境是 Development，调用 Developer Exception Page 
             if (env.IsDevelopment())
             {
@@ -94,10 +103,18 @@ namespace StudentManagement
 
             app.UseAuthentication();
 
-            app.UseMvc(routes =>
+
+            app.UseEndpoints(endpoints =>
             {
-                routes.MapRoute("default", "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            //app.UseMvc(routes =>
+            //{
+            //    routes.MapRoute("default", "{controller=Home}/{action=Index}/{id?}");
+            //});
 
 
 
