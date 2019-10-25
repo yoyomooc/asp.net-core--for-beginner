@@ -24,6 +24,11 @@ namespace StudentManagement.Controllers
 
 
 
+
+        #region 角色管理
+
+     
+
         // GET  Post 
 
         [HttpGet]
@@ -258,7 +263,88 @@ namespace StudentManagement.Controllers
 
             return RedirectToAction("EditRole", new { id = roleId });
         }
-  
+
+
+        #endregion
+
+
+        #region 用户管理
+
+        [HttpGet]
+        public IActionResult ListUsers()
+        {
+
+            var users = userManager.Users.ToList();
+          
+
+
+            return View(users);
+
+        }
+
+
+
+       [HttpGet]
+       public async Task<IActionResult> EditUser(string id)
+        {
+            var user =await userManager.FindByIdAsync(id);
+
+            if (user==null)
+            {
+                ViewBag.ErrorMessage = $"无法找到ID{id}的用户";
+                return View("NotFound");
+            }
+
+            var userClaims = await userManager.GetClaimsAsync(user);
+
+            var userRoles = await userManager.GetRolesAsync(user);
+
+            var model = new EditUserViewModel() { 
+            Id=user.Id,
+            Email=user.Email,
+            UserName=user.UserName,
+            City=user.City,
+            Claims=userClaims.Select(c=>c.Value).ToList(),
+                Roles = userRoles
+            };
+
+            return View(model);
+
+        }
+
+
+
+        [HttpPost]
+        public async Task<IActionResult> EditUser(EditUserViewModel model){
+
+            var user = await userManager.FindByIdAsync(model.Id);
+            if (user == null)
+            {
+                ViewBag.ErrorMessage = $"无法找到ID{model.Id}的用户";
+                return View("NotFound");
+            }
+            else
+            {
+                user.Email = model.Email;
+                user.UserName = model.UserName;
+                user.City = model.City;
+                var result = await userManager.UpdateAsync(user);
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("ListUsers");
+                }
+                foreach (var item in result.Errors)
+                {
+                    ModelState.AddModelError("", item.Description);
+                }
+
+                return View(model);
+
+            }
+        }
+
+
+        #endregion
 
 
 

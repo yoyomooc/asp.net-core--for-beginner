@@ -25,7 +25,6 @@ namespace StudentManagement.Controllers
         }
 
         [HttpGet]
-        [AllowAnonymous]
         public IActionResult AccessDenied()
         {
 
@@ -35,7 +34,6 @@ namespace StudentManagement.Controllers
 
 
         [HttpGet]
-        [AllowAnonymous]
         public IActionResult Fangyu()
         {
 
@@ -56,6 +54,7 @@ namespace StudentManagement.Controllers
         {
             if (ModelState.IsValid)
             {
+                //将数据从RegisterViewModel赋值到ApplicationUser
                 var user = new ApplicationUser
                 {
                     UserName = model.Email,
@@ -63,13 +62,23 @@ namespace StudentManagement.Controllers
                     City=model.City
                     
                 };
-
+                //将用户数据存储在AspNetUsers数据库表中
                 var result = await userManager.CreateAsync(user, model.Password);
 
+                //如果成功创建用户，则使用登录服务登录用户信息
+                //并重定向到homecontroller的索引操作
                 if (result.Succeeded)
                 {
-                    await signInManager.SignInAsync(user, isPersistent: false);
+                    //如果用户已登录并属于Admin角色。
+                    //那么就是Admin正在创建新用户。
+                    //所以重定向Admin用户对ListRoles的视图列表
 
+                    if (signInManager.IsSignedIn(User)&&User.IsInRole("Admin"))
+                    {
+                        return RedirectToAction("ListUsers","Admin");
+
+                    }
+                    await signInManager.SignInAsync(user, isPersistent: false);
                     return RedirectToAction("Index","Home");
                 }
 
@@ -156,7 +165,6 @@ namespace StudentManagement.Controllers
 
 
         [AcceptVerbs("Get","Post")]
-        [AllowAnonymous]
         public async Task<IActionResult> IsEmailInUse(string email)
         {
 

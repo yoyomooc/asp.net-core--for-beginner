@@ -51,10 +51,21 @@
                         <a class="nav-link" asp-controller="home" asp-action="Create">添加学生</a>
                     </li>
 
-                    @if (SignInManager.IsSignedIn(User)&&User.IsInRole("Admin"))
+                    @if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
                     {
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="Admin" asp-action="ListRoles">角色管理</a>
+
+
+
+                        <li class="nav-item dropdown">
+
+                            <a href="#" class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">管理</a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+
+                                <a class="dropdown-item" asp-controller="Admin" asp-action="ListRoles">角色列表</a>
+                                <a class="dropdown-item" asp-controller="Admin" asp-action="ListUsers">用户列表</a>
+                            </div>
+
+
                         </li>
 
                     }
@@ -99,13 +110,12 @@
         @RenderBody()
     </div>
 
-     
 
-        <script src="~/lib/jquery/jquery.js" asp-append-version="true"></script>
-        <script src="~/lib/jquery-validate/jquery.validate.js" asp-append-version="true"></script>
-        <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js" asp-append-version="true"></script>
-         
 
+    <script src="~/lib/jquery/jquery.js" asp-append-version="true"></script>
+    <script src="~/lib/jquery-validate/jquery.validate.js" asp-append-version="true"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js" asp-append-version="true"></script>
+    <script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>
     <script src="~/lib/twitter-bootstrap/js/bootstrap.js" asp-append-version="true"></script>
 
     @RenderSection("Scripts", required: false)
