@@ -7,13 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="wwwroot\js\**" />
-    <Content Remove="wwwroot\js\**" />
-    <EmbeddedResource Remove="wwwroot\js\**" />
-    <None Remove="wwwroot\js\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Compile Remove="Migrations\20190718051335_AddPotoPathToStudents.cs" />
     <Compile Remove="Migrations\20190718051335_AddPotoPathToStudents.Designer.cs" />
     <Compile Remove="Migrations\20190718053023_AddPotoPathToStudents.cs" />
