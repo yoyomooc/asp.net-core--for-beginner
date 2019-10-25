@@ -213,6 +213,37 @@ namespace StudentManagement.Controllers
             return RedirectToAction("EditRole", new { id = roleId });
         }
 
+
+
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteRole(string id)
+        {
+            var role = await roleManager.FindByIdAsync(id);
+
+            if (role == null)
+            {
+                ViewBag.ErrorMessage = $"角色id为{id}的信息不存在，请重试。";
+                return View("NotFound");
+            }
+            else
+            {
+                var result = await roleManager.DeleteAsync(role);
+
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("ListRoles");
+                }
+
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError("", error.Description);
+                }
+            }
+
+            return View("ListRoles");
+        }
+
         #endregion 角色管理
 
         #region 用户管理

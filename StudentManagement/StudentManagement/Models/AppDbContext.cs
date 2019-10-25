@@ -18,6 +18,14 @@ namespace StudentManagement.Models
         {
             base.OnModelCreating(modelBuilder);
 
+            foreach (var foreignKey in modelBuilder.Model.GetEntityTypes().SelectMany(
+                e=>e.GetForeignKeys()             
+                ))
+            {
+                foreignKey.DeleteBehavior = DeleteBehavior.Restrict;
+
+            }
+
             modelBuilder.Seed();
         }
     }
