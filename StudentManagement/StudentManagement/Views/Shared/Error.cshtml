@@ -1,0 +1,18 @@
+@{
+
+    ViewBag.Title = "异常错误页面";
+
+}
+
+@if (ViewBag.ErrorTitle == null)
+{
+    <h3 class="text-danger">
+        程序请求时发生了一个内部错误，我们会反馈给团队，我们正在努力解决这个问题。
+    </h3>
+    <h5 class="text-info">请通过 ltm@ddxc.org 与我们取得联系</h5>
+ }
+else
+{
+    <h1 class="text-danger">@ViewBag.ErrorTitle</h1>
+    <h6 class="text-danger">@ViewBag.ErrorMessage</h6>
+}

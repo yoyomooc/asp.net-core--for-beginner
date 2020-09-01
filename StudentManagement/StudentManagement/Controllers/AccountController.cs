@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using StudentManagement.Models;
@@ -33,13 +33,6 @@ namespace StudentManagement.Controllers
         }
 
 
-        [HttpGet]
-        public IActionResult Fangyu()
-        {
-
-            return View();
-
-        }
 
         [HttpGet]
         public IActionResult Register()

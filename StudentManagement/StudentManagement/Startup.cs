@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -50,7 +50,18 @@ namespace StudentManagement
 
             services.ConfigureApplicationCookie(options=>
             {
-                options.AccessDeniedPath = "/Account/fangyu";
+               //修改拒绝访问的路由地址
+                options.AccessDeniedPath = new PathString("/Admin/AccessDenied");
+                //修改登录地址的路由
+             //   options.LoginPath = new PathString("/Admin/Login");  
+                //修改注销地址的路由
+             //   options.LogoutPath = new PathString("/Admin/LogOut");
+                //统一系统全局的Cookie名称
+                options.Cookie.Name = "MockSchoolCookieName";
+                // 登录用户Cookie的有效期 
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(60);             
+                //是否对Cookie启用滑动过期时间。
+                options.SlidingExpiration = true;
             });
 
 
@@ -58,6 +69,18 @@ namespace StudentManagement
             services.AddIdentity<ApplicationUser, IdentityRole>()
                .AddErrorDescriber<CustomIdentityErrorDescriber>()
                 .AddEntityFrameworkStores<AppDbContext>();
+
+      // 策略结合声明授权
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("DeleteRolePolicy",  policy => policy.RequireClaim("Delete Role"));
+                options.AddPolicy("AdminRolePolicy",  policy => policy.RequireRole("Admin"));
+                                                                          
+                //策略结合多个角色进行授权                 
+                options.AddPolicy("SuperAdminPolicy", policy =>policy.RequireRole("Admin", "User"));
+
+                options.AddPolicy("EditRolePolicy", policy => policy.RequireClaim("Edit Role"));
+            });
 
 
             services.AddMvc(config=>
