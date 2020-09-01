@@ -1,4 +1,4 @@
-# asp.net-core-mvc-2019
+# 深入浅出ASP.NET Core 视频课程的配套源代码
 
 # 介绍
 
