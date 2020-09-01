@@ -11,3 +11,8 @@
 
 
 
+https://gitee.com/aiabpedu/asp.net-core-mvc-2019.git
+
+https://ltm0203@github.com/yoyomooc/asp.net-core--for-beginner.git
+
+https://yoyocms@gitee.com/aiabpedu/asp.net-core-mvc-2019.git

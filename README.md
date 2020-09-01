@@ -16,26 +16,24 @@
 
   通过完成本课程，您将能够使用 ASP.NET Core 开发新的 Web 应用程序，并在为新项目选择技术时做出战略决策。
 
-## 课程学习地址：
+## 视频课程地址
+ 
+前64章学习地址：https://www.ixigua.com/6823379956358185479?id=6740592107225874958
 
-腾讯课堂： [从零开始学 Asp.Net Core MVC](https://ke.qq.com/course/392589)
 
-网易云课堂：[从零开始学 Asp.Net Core MVC](https://study.163.com/course/courseMain.htm?courseId=1209215803&share=2&shareId=400000000309007)
+完整课程地址：https://www.52abp.com/College
 
-专题地址： https://www.52abp.com/Wiki
+配套图文：http://www.yoyomooc.com/
 
-## 代码使用
+## 交流提问
 
-您可以点击 克隆/下载 按钮，下载 ZIP 压缩包，或者通过克隆整个仓库来下载代码。
+> 交流群：
+- 点击链接加入群聊【微软MVP带你学ASP.NET CORE】952387474：https://jq.qq.com/?_wv=1027&k=5rOxIoS
 
-#### 参与贡献
+- 点击链接加入群聊【52ABP .NET CORE 实战交流】633751348：https://jq.qq.com/?_wv=1027&k=5EHBATE
 
-1. Fork 本仓库
-2. 新建 Feat_xxx 分支
-3. 提交代码
-4. 新建 Pull Request
 
-# 如何提问-群规
+## 如何提问-群规
 
 1. 工作是时间严禁讨论与技术无关话题，严禁斗图。工作时间为上午 9 点到 12 点，下午 1 点半到 6 点。
 2. 欢迎提问，尽量少提很具体的问题，比如：你在公司写的代码为什么不 work，然贴一段代码出来这种。
@@ -44,7 +42,3 @@
 5.  可以发 issue 到 github https://github.com/yoyomooc/asp.net-core--for-beginner ,也有助于沉淀知识 ，群主尽量每天晚上去瞄一下。
 6. 定时清人，3 个月没有说过话的先清除，后面怎么清我还没有想好。 回归初心，打造高质量的 asp.net core 学习群。
 
-> 交流群：
-- 点击链接加入群聊【微软MVP带你学ASP.NET CORE】952387474：https://jq.qq.com/?_wv=1027&k=5rOxIoS
-
-- 点击链接加入群聊【52ABP .NET CORE 实战交流】633751348：https://jq.qq.com/?_wv=1027&k=5EHBATE
