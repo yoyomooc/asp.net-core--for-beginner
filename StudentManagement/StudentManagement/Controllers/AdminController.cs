@@ -74,7 +74,7 @@ namespace StudentManagement.Controllers
 
         //角色ID从URL传递给操作方法
         [HttpGet]
-        [Authorize(policy: "EditRolePolicy")]
+        //[Authorize(policy: "EditRolePolicy")]
         public async Task<IActionResult> EditRole(string id)
         {
             //通过角色ID查找角色
