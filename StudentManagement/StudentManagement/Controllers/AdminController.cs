@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace StudentManagement.Controllers
 {
-    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin")]
     public class AdminController : Controller
     {
         private RoleManager<IdentityRole> roleManager;
