@@ -33,12 +33,12 @@
     <div class="card-footer">
         <form method="post" asp-action="DeleteRole" asp-route-id="@role.Id">
 
-            @*@if ((await authorizationService.AuthorizeAsync(User, "EditRolePolicy")).Succeeded)
+            @if ((await authorizationService.AuthorizeAsync(User, "EditRolePolicy")).Succeeded)
             {
                 <a asp-controller="Admin" asp-action="EditRole" asp-route-id="@role.Id" class="btn btn-primary">编辑</a>
 
-            }*@
-            <a asp-controller="Admin" asp-action="EditRole" asp-route-id="@role.Id" class="btn btn-primary">编辑</a>
+            }
+            @*<a asp-controller="Admin" asp-action="EditRole" asp-route-id="@role.Id" class="btn btn-primary">编辑</a>*@
 
 
             <span id="confirmDeleteSpan_@role.Id" style="display:none">

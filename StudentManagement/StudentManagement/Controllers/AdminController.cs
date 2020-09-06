@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace StudentManagement.Controllers
 {
-    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin")]
     public class AdminController : Controller
     {
         private RoleManager<IdentityRole> roleManager;
@@ -74,7 +74,7 @@ namespace StudentManagement.Controllers
 
         //角色ID从URL传递给操作方法
         [HttpGet]
-        //[Authorize(policy: "EditRolePolicy")]
+        [Authorize(policy: "EditRolePolicy")]
         public async Task<IActionResult> EditRole(string id)
         {
             //通过角色ID查找角色
@@ -300,7 +300,7 @@ namespace StudentManagement.Controllers
                 Email = user.Email,
                 UserName = user.UserName,
                 City = user.City,
-                Claims = userClaims.Select(c => c.Value).ToList(),
+                Claims = userClaims,
                 Roles = userRoles
             };
             return View(model);
@@ -371,6 +371,7 @@ namespace StudentManagement.Controllers
         #region 管理用户中的角色
 
         [HttpGet]
+        [Authorize(Policy = "EditRolePolicy")]
         public async Task<IActionResult> ManageUserRoles(string userId)
         {
             ViewBag.userId = userId;
@@ -508,7 +509,7 @@ namespace StudentManagement.Controllers
 
             // 添加界面上选中的所有声明信息
             result = await userManager.AddClaimsAsync(user,
-                model.Cliams.Where(c => c.IsSelected).Select(c => new Claim(c.ClaimType, c.ClaimType)));
+                model.Cliams.Select(c => new Claim(c.ClaimType, c.IsSelected?"true":"false")));
 
             if (!result.Succeeded)
             {
