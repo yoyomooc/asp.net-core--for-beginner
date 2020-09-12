@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -34,15 +34,11 @@ namespace StudentManagement.Controllers
             {
 
                 case 404:
-
-                    ViewBag.ErrorMessage = "抱歉，您访问的页面不存在";
-
-     logger.LogWarning($"发生了一个404错误。路径={statusCodeResult.OriginalPath}以及查询字符串={statusCodeResult.OriginalQueryString}");
-
-                    //ViewBag.Path = statusCodeResult.OriginalPath;
-                    //ViewBag.QueryStr = statusCodeResult.OriginalQueryString;
-                    //ViewBag.BasePath = statusCodeResult.OriginalPathBase;
-
+                    ViewBag.ErrorMessage = "抱歉，你访问的页面不存在";
+                    //LogWarning() 方法将异常记录作为日志中的警告类别记录
+                    logger.LogWarning($"发生了一个404错误. 路径 = " +
+                $"{statusCodeResult.OriginalPath} 以及查询字符串 = " +
+                $"{statusCodeResult.OriginalQueryString}");
                     break;
 
             }

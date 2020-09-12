@@ -26,7 +26,7 @@ namespace StudentManagement.Models
 
             }
 
-            modelBuilder.Seed();
+         // modelBuilder.Seed();
         }
     }
 }
