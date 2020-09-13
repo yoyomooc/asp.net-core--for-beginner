@@ -41,6 +41,9 @@ namespace StudentManagement
                 //  options.Password.RequiredUniqueChars = 3;
                 options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequireUppercase = false;
+
+                options.SignIn.RequireConfirmedEmail = true;
+
             });
 
             services.ConfigureApplicationCookie(options =>
@@ -61,7 +64,8 @@ namespace StudentManagement
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                .AddErrorDescriber<CustomIdentityErrorDescriber>()
-                .AddEntityFrameworkStores<AppDbContext>();
+                .AddEntityFrameworkStores<AppDbContext>()
+                .AddDefaultTokenProviders();;
 
             // 策略结合声明授权
             services.AddAuthorization(options =>
@@ -82,6 +86,23 @@ namespace StudentManagement
                 options.InvokeHandlersAfterFailure = false;
             });
 
+            //services.AddAuthentication().AddMicrosoftAccount(opt =>
+            //{
+            //    opt.ClientId = "e0701b0f-f16f-423b-9555-6f1fcf08b714";
+            //    opt.ClientSecret = "oUb~Xv5lih3F5cLUrSy2ItdZ9s7_.I.3z_";
+
+            //});
+
+            services.AddAuthentication().AddMicrosoftAccount(opt =>
+            {
+                opt.ClientId = _configuration["Authentication:Microsoft:ClientId"];
+                opt.ClientSecret = _configuration["Authentication:Microsoft:ClientSecret"];
+            }).AddGitHub(options =>
+            {
+                options.ClientId = _configuration["Authentication:Github:ClientId"];
+                options.ClientSecret = _configuration["Authentication:Github:ClientSecret"];
+            });
+
             services.AddMvc(config =>
             {
                 var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
@@ -92,8 +113,6 @@ namespace StudentManagement
 
             services.AddSingleton<IAuthorizationHandler, CanEditOnlyOtherAdminRolesAndClaimsHandler>();
             services.AddSingleton<IAuthorizationHandler, SuperAdminHandler>();
-
-
         }
 
         // This method gets called by the runtim0e. Use this method to configure the HTTP request pipeline.
@@ -122,8 +141,6 @@ namespace StudentManagement
             });
         }
 
-
-
         //授权访问
         private bool AuthorizeAccess(AuthorizationHandlerContext context)
         {
@@ -131,6 +148,5 @@ namespace StudentManagement
                     context.User.HasClaim(claim => claim.Type == "Edit Role" && claim.Value == "true") ||
                     context.User.IsInRole("Super Admin");
         }
-
     }
 }

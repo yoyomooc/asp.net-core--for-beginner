@@ -17,7 +17,7 @@ namespace StudentManagement.Controllers
     {
         private RoleManager<IdentityRole> roleManager;
         private UserManager<ApplicationUser> userManager;
-        private readonly ILogger<AdminController> logger;
+        private readonly ILogger logger;
 
         public AdminController(RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager, ILogger<AdminController> logger)
         {

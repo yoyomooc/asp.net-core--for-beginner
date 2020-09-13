@@ -4,12 +4,11 @@
 }
 
 
+<div class="row">
 
-    <h1>用户登录</h1>
-
-
-    <div class="col-md-12">
-
+    <div class="col-md-6">
+        <h1>用户登录</h1>
+        <hr />
         <form method="post">
             <div asp-validation-summary="All" class="text-danger"></div>
 
@@ -26,11 +25,11 @@
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
             <div class="form-group">
-              
-                <div class="custom-checkbox">
-                    <label asp-for="RememberMe"><input asp-for="RememberMe" /> @Html.DisplayNameFor(m=>m.RememberMe)</label>
 
-                    
+                <div class="custom-checkbox">
+                    <label asp-for="RememberMe"><input asp-for="RememberMe" /> @Html.DisplayNameFor(m => m.RememberMe)</label>
+
+
 
 
                 </div>
@@ -40,9 +39,33 @@
             <button type="submit" class="btn btn-primary"> 登录</button>
 
         </form>
+    </div>
 
+    <div class="col-md-6 border-left">
+
+        <form class="mt-3" method="post" asp-action="ExternalLogin" asp-controller="Account" asp-route-returnUrl="@Model.ReturnUrl">
+            <div>
+                @foreach (var provider in Model.ExternalLogins)
+                {
+                    <button type="submit" class="btn btn-info" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">
+                        @provider.DisplayName
+                    </button>
+                }
+            </div>
+        </form>
 
     </div>
+  
+
+
+</div>
+
+
+
+
+
+
+     
 
 
 
