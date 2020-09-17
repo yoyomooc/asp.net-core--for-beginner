@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using StudentManagement.RazorPage.Services;
 
 namespace StudentManagement.RazorPage
 {
@@ -23,6 +24,7 @@ namespace StudentManagement.RazorPage
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddRazorPages();
+             services.AddSingleton<IStudentRepository, MockStudentRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

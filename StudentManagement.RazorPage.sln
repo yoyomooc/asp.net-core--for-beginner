@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30320.27
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudentManagement.RazorPage", "StudentManagement.RazorPage\StudentManagement.RazorPage.csproj", "{F1DAB2B3-A6E0-4E7F-82ED-A4EDCB4B1D90}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StudentManagement.RazorPage", "StudentManagement.RazorPage\StudentManagement.RazorPage.csproj", "{F1DAB2B3-A6E0-4E7F-82ED-A4EDCB4B1D90}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudentManagement.RazorPage.Models", "StudentManagement.RazorPage.Models\StudentManagement.RazorPage.Models.csproj", "{B8B0CEA2-FC41-422D-B736-949B96FDF54A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudentManagement.RazorPage.Services", "StudentManagement.RazorPage.Services\StudentManagement.RazorPage.Services.csproj", "{2DF8AE63-80AD-460A-A26F-464D6305B293}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +19,14 @@ Global
 		{F1DAB2B3-A6E0-4E7F-82ED-A4EDCB4B1D90}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F1DAB2B3-A6E0-4E7F-82ED-A4EDCB4B1D90}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F1DAB2B3-A6E0-4E7F-82ED-A4EDCB4B1D90}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B8B0CEA2-FC41-422D-B736-949B96FDF54A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B8B0CEA2-FC41-422D-B736-949B96FDF54A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B8B0CEA2-FC41-422D-B736-949B96FDF54A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B8B0CEA2-FC41-422D-B736-949B96FDF54A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2DF8AE63-80AD-460A-A26F-464D6305B293}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2DF8AE63-80AD-460A-A26F-464D6305B293}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2DF8AE63-80AD-460A-A26F-464D6305B293}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2DF8AE63-80AD-460A-A26F-464D6305B293}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
