@@ -1,5 +1,5 @@
 
-@page
+@page  "/Students"
 @model StudentManagement.RazorPage.Pages.Students.IndexModel
 @{
     ViewData["Title"] = "Index";
@@ -11,7 +11,7 @@
     }
 </style>
 
-<h1>Students</h1>
+<h1>学生</h1>
 
 <div class="card-deck">
     @foreach (var student in Model.Students)
@@ -26,7 +26,7 @@
                  asp-append-version="true" />
 
             <div class="card-footer text-center">
-                <a href="#" class="btn btn-primary m-1">详情</a>
+                <a asp-page="/Students/Details" asp-route-ID="@student.Id" class="btn btn-primary m-1">详情</a>
                 <a href="#" class="btn btn-primary m-1">编辑</a>
                 <a href="#" class="btn btn-danger m-1">删除</a>
             </div>

@@ -8,6 +8,7 @@ namespace StudentManagement.RazorPage.Services
      public interface IStudentRepository
     {
                 IEnumerable<Student> GetAllStudents();
-
+                Student GetStudent(int id);
+           Student Update(Student updatedStudent);
     }
 }

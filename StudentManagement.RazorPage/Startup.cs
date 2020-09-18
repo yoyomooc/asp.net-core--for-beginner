@@ -1,9 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -24,7 +21,17 @@ namespace StudentManagement.RazorPage
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddRazorPages();
-             services.AddSingleton<IStudentRepository, MockStudentRepository>();
+            services.AddSingleton<IStudentRepository, MockStudentRepository>();
+
+            services.Configure<RouteOptions>(options =>
+            {
+                options.LowercaseUrls = true;
+                options.LowercaseQueryStrings = true;
+                //  在生成的URL后面附加一个斜杠
+                options.AppendTrailingSlash = true;
+                        options.ConstraintMap.Add("even", typeof(EvenConstraint));
+
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -1,7 +1,6 @@
 using StudentManagement.RazorPage.Models;
-using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 
 namespace StudentManagement.RazorPage.Services
 {
@@ -16,7 +15,6 @@ namespace StudentManagement.RazorPage.Services
                  new Student() { Id = 1, Name = "张三", ClassName = ClassNameEnum.FirstGrade, Email = "Tony-zhang@52abp.com" },
             new Student() { Id = 2, Name = "李四", ClassName = ClassNameEnum.SecondGrade, Email = "lisi@52abp.com" },
             new Student() { Id = 3, Name = "王二麻子", ClassName = ClassNameEnum.GradeThree, Email = "wang@52abp.com" },
-      
             };
         }
 
@@ -24,4 +22,21 @@ namespace StudentManagement.RazorPage.Services
         {
             return _studentList;
         }
-    } }
+          public Student GetStudent(int id)
+        {
+            return _studentList.FirstOrDefault(e => e.Id == id);
+        }
+        public Student Update(Student updatedStudent)
+{
+    Student student = _studentList
+        .FirstOrDefault(e => e.Id == updatedStudent.Id);
+    if (student != null)
+    {
+        student.Name = updatedStudent.Name;
+        student.Email = updatedStudent.Email;
+        student.ClassName = updatedStudent.ClassName;
+    }
+    return student;
+ }
+    }
+}
