@@ -5,9 +5,14 @@ VisualStudioVersion = 16.0.30320.27
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StudentManagement.RazorPage", "StudentManagement.RazorPage\StudentManagement.RazorPage.csproj", "{F1DAB2B3-A6E0-4E7F-82ED-A4EDCB4B1D90}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudentManagement.RazorPage.Models", "StudentManagement.RazorPage.Models\StudentManagement.RazorPage.Models.csproj", "{B8B0CEA2-FC41-422D-B736-949B96FDF54A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StudentManagement.RazorPage.Models", "StudentManagement.RazorPage.Models\StudentManagement.RazorPage.Models.csproj", "{B8B0CEA2-FC41-422D-B736-949B96FDF54A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudentManagement.RazorPage.Services", "StudentManagement.RazorPage.Services\StudentManagement.RazorPage.Services.csproj", "{2DF8AE63-80AD-460A-A26F-464D6305B293}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StudentManagement.RazorPage.Services", "StudentManagement.RazorPage.Services\StudentManagement.RazorPage.Services.csproj", "{2DF8AE63-80AD-460A-A26F-464D6305B293}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B7FC0724-93B7-49A0-A341-4934CEF371FF}"
+	ProjectSection(SolutionItems) = preProject
+		..\README.md = ..\README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
