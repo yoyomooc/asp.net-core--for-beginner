@@ -133,8 +133,8 @@ namespace StudentManagement
 
             app.UseAuthentication();
 
-            app.UseDataInitializer();
 
+            app.UseDataInitializer();
             app.UseMvc(routes =>
             {
                 routes.MapRoute("default", "{controller=Home}/{action=Index}/{id?}");
