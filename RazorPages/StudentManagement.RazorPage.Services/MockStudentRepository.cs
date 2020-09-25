@@ -22,21 +22,24 @@ namespace StudentManagement.RazorPage.Services
         {
             return _studentList;
         }
-          public Student GetStudent(int id)
+
+        public Student GetStudent(int id)
         {
             return _studentList.FirstOrDefault(e => e.Id == id);
         }
+
         public Student Update(Student updatedStudent)
-{
-    Student student = _studentList
-        .FirstOrDefault(e => e.Id == updatedStudent.Id);
-    if (student != null)
-    {
-        student.Name = updatedStudent.Name;
-        student.Email = updatedStudent.Email;
-        student.ClassName = updatedStudent.ClassName;
-    }
-    return student;
- }
+        {
+            Student student = _studentList
+                .FirstOrDefault(e => e.Id == updatedStudent.Id);
+            if (student != null)
+            {
+                student.Name = updatedStudent.Name;
+                student.Email = updatedStudent.Email;
+                student.ClassName = updatedStudent.ClassName;
+                student.PhotoPath = updatedStudent.PhotoPath;
+            }
+            return student;
+        }
     }
 }
