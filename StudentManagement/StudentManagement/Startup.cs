@@ -47,6 +47,18 @@ namespace StudentManagement
 
             });
 
+
+
+            //services.Configure<DataProtectionTokenProviderOptions>(
+            //    opt=>opt.TokenLifespan=TimeSpan.FromHours(10))
+                
+                
+            //    ;
+
+
+
+
+
             services.ConfigureApplicationCookie(options =>
             {
                 //修改拒绝访问的路由地址
