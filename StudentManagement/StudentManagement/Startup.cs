@@ -35,12 +35,16 @@ namespace StudentManagement
                 options => options.UseSqlServer(_configuration.GetConnectionString("StudentDBConnection"))
                 );
 
+         
+
             services.Configure<IdentityOptions>(options =>
             {
                 options.Password.RequiredLength = 6;
                 //  options.Password.RequiredUniqueChars = 3;
                 options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequireUppercase = false;
+                options.SignIn.RequireConfirmedEmail = true;
+
             });
 
             services.ConfigureApplicationCookie(options =>
@@ -61,7 +65,7 @@ namespace StudentManagement
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                .AddErrorDescriber<CustomIdentityErrorDescriber>()
-                .AddEntityFrameworkStores<AppDbContext>();
+                .AddEntityFrameworkStores<AppDbContext>().AddDefaultTokenProviders();
 
             // 策略结合声明授权
             services.AddAuthorization(options =>
@@ -81,6 +85,19 @@ namespace StudentManagement
                 options.AddPolicy("EditRolePolicy", policy => policy.AddRequirements(new ManageAdminRolesAndClaimsRequirement()));
                 options.InvokeHandlersAfterFailure = false;
             });
+
+
+
+            services.AddAuthentication().AddMicrosoftAccount(opt =>
+            {
+                opt.ClientId = _configuration["Authentication:Microsoft:ClientId"];
+                opt.ClientSecret = _configuration["Authentication:Microsoft:ClientSecret"];
+            }).AddGitHub(options =>
+            {
+                options.ClientId = _configuration["Authentication:Github:ClientId"];
+                options.ClientSecret = _configuration["Authentication:Github:ClientSecret"];
+            });
+
 
             services.AddMvc(config =>
             {
