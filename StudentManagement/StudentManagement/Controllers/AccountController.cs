@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using StudentManagement.Models;
 using StudentManagement.ViewModels;
+using System;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -121,7 +122,12 @@ namespace StudentManagement.Controllers
                     return View(model);
                 }
 
-                var result = await signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
+                //PasswordSignInAsync()我们将最后一个参数从false修改为了true,用于启用账户锁定。
+
+                //每次登录失败后，都会将AspNetUsers表中的AccessFailedCount列值增加1。当它等于5时，
+                //MaxFailedAccessAttempts将会锁定账户，然后修改LockoutEnd列,添加解锁时间。
+                //即使我们提供正确的用户名和密码， PasswordSignInAsync()方法的返回值依然是Lockedout即被锁定。
+                var result = await signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, true);
 
                 if (result.Succeeded)
                 {
@@ -143,6 +149,13 @@ namespace StudentManagement.Controllers
                         return RedirectToAction("Index", "home");
                     }
                 }
+
+                if (result.IsLockedOut)
+                {
+                    return View("AccountLocked");
+                }
+
+
                 ModelState.AddModelError(string.Empty, "登录失败，请重试");
             }
             return View(model);
@@ -195,8 +208,6 @@ namespace StudentManagement.Controllers
             var email = info.Principal.FindFirstValue(ClaimTypes.Email);
             ApplicationUser user = null;
 
-
-
             if (email != null)
             {
                 // 通过邮箱地址去查询用户是否已存在
@@ -213,6 +224,12 @@ namespace StudentManagement.Controllers
             //如果用户之前已经登录过了，会在AspNetUserLogins表有对应的记录，这个时候无需创建新的记录，直接使用当前记录登录系统即可。
             var signInResult = await signInManager.ExternalLoginSignInAsync(info.LoginProvider,
                 info.ProviderKey, isPersistent: false, bypassTwoFactor: true);
+
+            if (signInResult.IsLockedOut)
+            {
+                return View("AccountLocked");
+            }
+
 
             if (signInResult.Succeeded)
             {
@@ -234,13 +251,11 @@ namespace StudentManagement.Controllers
                         //如果不存在，则创建一个用户，但是这个用户没有密码。
                         await userManager.CreateAsync(user);
 
-
                         var token = await userManager.GenerateEmailConfirmationTokenAsync(user);
 
                         var confirmationLink = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, token = token }, Request.Scheme);
 
-
-                      logger.Log(LogLevel.Warning, confirmationLink);
+                        logger.Log(LogLevel.Warning, confirmationLink);
                         ViewBag.ErrorTitle = "注册成功";
                         ViewBag.ErrorMessage = $"在你登入系统前,我们已经给您发了一份邮件，需要您先进行邮件验证，点击确认链接即可完成。";
                         return View("Error");
@@ -261,8 +276,6 @@ namespace StudentManagement.Controllers
         }
 
         #endregion 扩展登录
-
-
 
         #region 确认邮箱
 
@@ -291,37 +304,30 @@ namespace StudentManagement.Controllers
             return View("Error");
         }
 
-
-        #endregion
-
+        #endregion 确认邮箱
 
         #region 激活邮箱
 
         [HttpGet]
         public IActionResult ActivateUserEmail()
         {
-
-
             return View();
         }
 
         [HttpPost]
         public async Task<IActionResult> ActivateUserEmail(EmailAddressViewModel model)
         {
-
             if (ModelState.IsValid)
             {
+                var user = await userManager.FindByEmailAsync(model.Email);
 
-             var user=   await userManager.FindByEmailAsync(model.Email);
-
-                if (user!=null)
+                if (user != null)
                 {
                     //当前已经存在老用户
                     //生成电子令牌
                     //以及电子令牌确认URL
 
-
-                    if (! await userManager.IsEmailConfirmedAsync(user))
+                    if (!await userManager.IsEmailConfirmedAsync(user))
                     {
                         //生成电子邮件确认令牌
                         var token = await userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -335,24 +341,18 @@ namespace StudentManagement.Controllers
                         //重定向用户到忘记密码确认视图
                         return View("ActivateUserEmailConfirmation", ViewBag.Message);
                     }
-
-                
-
-
                 }
-
 
                 ViewBag.Message = "请确认邮箱是否存在异常，现在我们无法给您发送激活链接。";
                 // 为了避免帐户枚举和暴力攻击，所以不进行用户不存在或邮箱未验证的提示
                 return View("ActivateUserEmailConfirmation", ViewBag.Message);
             }
 
-
             return View();
         }
 
+        #endregion 激活邮箱
 
-        #endregion
         #region 找回密码& 重置密码
 
         [HttpGet]
@@ -361,18 +361,16 @@ namespace StudentManagement.Controllers
             return View();
         }
 
-
         [HttpPost]
         public async Task<IActionResult> ForgotPassword(EmailAddressViewModel model)
         {
-
             if (ModelState.IsValid)
             {
                 // 通过邮件地址查询用户地址
                 var user = await userManager.FindByEmailAsync(model.Email);
                 // 如果找到了用户并且确认了电子邮件
-                if (user != null && await userManager.IsEmailConfirmedAsync(user)) {
-
+                if (user != null && await userManager.IsEmailConfirmedAsync(user))
+                {
                     //生成重置密码令牌
                     var token = await userManager.GeneratePasswordResetTokenAsync(user);
 
@@ -393,26 +391,19 @@ namespace StudentManagement.Controllers
             return View(model);
         }
 
-
         // 电子邮箱 重置密码的token  新密码 确认密码
-
 
         [HttpGet]
         public IActionResult ResetPassword(string token, string email)
         {
-
             //如果密码的token或者邮箱地址为空，用户有可能在试图篡改密码重置的URL
 
-            if (token==null||email==null)
+            if (token == null || email == null)
             {
-
                 ModelState.AddModelError("", "当前的密码重置令牌无效");
-
             }
 
             return View();
-
-
         }
 
         [HttpPost]
@@ -422,17 +413,21 @@ namespace StudentManagement.Controllers
             {
                 // 通过电子邮件查找用户
                 var user = await userManager.FindByEmailAsync(model.Email);
-
                 if (user != null)
                 {
                     //重置用户密码
-
-                 var result=   await userManager.ResetPasswordAsync(user,model.Token,model.Password);
+                    var result = await userManager.ResetPasswordAsync(user, model.Token, model.Password);
 
                     if (result.Succeeded)
                     {
+                        //密码成功重置后，如果当前账户被锁定，则设置该账户锁定结束日期为当前UTC日期时间。
+                        //这样用户就可以用新密码登录系统。
+                        if (await userManager.IsLockedOutAsync(user))
+                        {
+                            await userManager.SetLockoutEndDateAsync(user, DateTimeOffset.UtcNow);
+                            //DateTimeOffset指是UTC时间即格林威治时间。
+                        }
                         return View("ResetPasswordConfirmation");
-
                     }
 
                     //告诉它验证不通过的错误信息
@@ -450,9 +445,106 @@ namespace StudentManagement.Controllers
             return View(model);
         }
 
+        #endregion 找回密码& 重置密码
 
+        #region 修改密码
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> ChangePassword()
+        {
+            var user = await userManager.GetUserAsync(User);
+
+            //判断当前用户是否拥有密码，如果没有重定向到添加密码视图
+            var userHasPassword = await userManager.HasPasswordAsync(user);
+
+            if (!userHasPassword)
+            {
+                return RedirectToAction("AddPassword");
+            }
+            return View();
+        }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await userManager.GetUserAsync(User);
+                if (user == null)
+                {
+                    return RedirectToAction("Login");
+                }
+
+                var result = await userManager.ChangePasswordAsync(user, model.CurrentPassword, model.ConfirmPassword);
+
+                //如果新密码不符合复杂性规则或当前密码不正确，我们需要将错误提示，返回到ChangePassword视图页面中
+                if (!result.Succeeded)
+                {
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
+                    return View();
+                }
+
+                await signInManager.RefreshSignInAsync(user);
+
+                return View("ChangePasswordConfirmation");
+            }
+
+            return View(model);
+        }
+
+        #endregion 修改密码
+
+        #region 添加密码功能
+
+        [HttpGet]
+        public async Task<IActionResult> AddPassword()
+        {
+            var user = await userManager.GetUserAsync(User);
+
+            var userHasPassword = await userManager.HasPasswordAsync(user);
+
+            if (userHasPassword)
+            {
+                return RedirectToAction("ChangePassword");
+            }
+            return View();
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> AddPassword(AddPasswordViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await userManager.GetUserAsync(User);
+                //为用户添加密码
+                var result = await userManager.AddPasswordAsync(user, model.NewPassword);
+        
+                if (!result.Succeeded)
+                {
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
+                    return View();
+                }
+             
+                //刷新当前用户的Cookie
+                await signInManager.RefreshSignInAsync(user);
+
+                return View("AddPasswordConfirmation");
+
+            }
+
+            return View(model);
+        }
 
         #endregion
+
 
         [HttpPost]
         public async Task<IActionResult> Logout()

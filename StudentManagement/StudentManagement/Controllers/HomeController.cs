@@ -1,12 +1,15 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting.Internal;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using StudentManagement.Models;
+using StudentManagement.Security.CustomTokenProvider;
 using StudentManagement.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace StudentManagement.Controllers
 {
@@ -18,15 +21,16 @@ namespace StudentManagement.Controllers
         private readonly HostingEnvironment hostingEnvironment;
         private readonly ILogger logger;
 
-
+        private readonly IDataProtector dataProtector;
 
         //使用构造函数注入的方式注入IStudentRepository
         public HomeController(IStudentRepository studentRepository, HostingEnvironment hostingEnvironment,
-            ILogger<HomeController> logger)
+            ILogger<HomeController> logger,DataProtectionPurposeStrings dataProtectionPurposeStrings,IDataProtectionProvider dataProtectionProvider)
         {
             _studentRepository = studentRepository;
             this.hostingEnvironment = hostingEnvironment;
             this.logger = logger;
+            dataProtector = dataProtectionProvider.CreateProtector(dataProtectionPurposeStrings.StudentIdRouteValue);
             
         }
 
@@ -34,7 +38,12 @@ namespace StudentManagement.Controllers
 
         public IActionResult Index()
         {
-            IEnumerable<Student> students = _studentRepository.GetAllStudents();
+            IEnumerable<Student> students = _studentRepository.GetAllStudents().
+                Select(s=>{
+                //加密ID值并存储在EncryptedId属性中
+                s.EncryptedId = dataProtector.Protect(s.Id.ToString());
+                return s;            
+            });
 
             return View(students);
 
@@ -43,30 +52,33 @@ namespace StudentManagement.Controllers
 
 
 
-      
-        public IActionResult Details(int id)
+        // Details视图接收加密后的StudentID
+        public IActionResult Details(string id)
         {
 
-            logger.LogTrace("Trace(跟踪) Log");
-            logger.LogDebug("Debug(调试) Log");
-            logger.LogInformation("信息(Information) Log");
-            logger.LogWarning("警告(Warning) Log");
-            logger.LogError("错误(Error) Log");
-            logger.LogCritical("严重(Critical) Log");
-
-
-
-
+            //logger.LogTrace("Trace(跟踪) Log");
+            //logger.LogDebug("Debug(调试) Log");
+            //logger.LogInformation("信息(Information) Log");
+            //logger.LogWarning("警告(Warning) Log");
+            //logger.LogError("错误(Error) Log");
+            //logger.LogCritical("严重(Critical) Log");
             //  throw new Exception("此异常发生在Details视图中");
 
+            //使用 Unprotect()方法来解析学生id
+            var decryptedId =   dataProtector.Unprotect(id);
 
-            Student student = _studentRepository.GetStudent(id);
+           
 
-            if (student==null)
+
+         var decryptedStudentId= Convert.ToInt32(decryptedId);
+
+
+            Student student = _studentRepository.GetStudent(decryptedStudentId);
+
+            if (student == null)
             {
-                Response.StatusCode = 404;
-                return View("StudentNotFound",id);
-
+                ViewBag.ErrorMessage = $"学生Id={id}的信息不存在，请重试。";
+                return View("NotFound");
             }
 
             //实例化HomeDetailsViewModel并存储Student详细信息和PageTitle
@@ -75,6 +87,7 @@ namespace StudentManagement.Controllers
                 Student = student,
                 PageTitle = "学生详细信息"
             };
+            //将ViewModel对象传递给View()方法
             return View(homeDetailsViewModel);
         }
 

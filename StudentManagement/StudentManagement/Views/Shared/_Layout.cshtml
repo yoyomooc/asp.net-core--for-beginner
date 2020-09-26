@@ -51,24 +51,31 @@
                         <a class="nav-link" asp-controller="home" asp-action="Create">添加学生</a>
                     </li>
 
-                    @if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+                    @if (SignInManager.IsSignedIn(User))
                     {
 
 
 
-                        <li class="nav-item dropdown">
+                <li class="nav-item dropdown">
 
-                            <a href="#" class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">管理</a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <a href="#" class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">管理</a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        @if (User.IsInRole("Admin"))
+                        {<a class="dropdown-item" asp-controller="Admin" asp-action="ListRoles">角色列表</a>
+                            <a class="dropdown-item" asp-controller="Admin" asp-action="ListUsers">用户列表</a>
 
-                                <a class="dropdown-item" asp-controller="Admin" asp-action="ListRoles">角色列表</a>
-                                <a class="dropdown-item" asp-controller="Admin" asp-action="ListUsers">用户列表</a>
-                            </div>
+                        }
 
+                        <a class="dropdown-item" asp-controller="Account" asp-action="ChangePassword">密码管理</a>
 
-                        </li>
+                    </div>
+
+                  
+                </li>
 
                     }
+
+
 
 
                 </ul>

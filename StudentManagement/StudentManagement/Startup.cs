@@ -11,6 +11,7 @@ using StudentManagement.Data;
 using StudentManagement.Middlewares;
 using StudentManagement.Models;
 using StudentManagement.Security;
+using StudentManagement.Security.CustomTokenProvider;
 using System;
 
 namespace StudentManagement
@@ -45,19 +46,32 @@ namespace StudentManagement
                 options.Password.RequireUppercase = false;
                 options.SignIn.RequireConfirmedEmail = true;
 
+                //通过自定义的CustomEmailConfirmation名称来覆盖旧有token名称，
+                //是它与AddTokenProvider<CustomEmailConfirmationTokenProvider<ApplicationUser>>("ltmEmailConfirmation")
+                //关联在一起
+                options.Tokens.EmailConfirmationTokenProvider = "ltmEmailConfirmation";
+
+                //指 在帐户被锁定之前允许的失败登录的次数。默认值为 5。
+                options.Lockout.MaxFailedAccessAttempts = 5;
+                //默认锁定时间为 15 分钟。
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
             });
 
 
+            /// 修改所有令牌类型的有效时间为10个小时
+            services.Configure<DataProtectionTokenProviderOptions>(
+                opt =>
+                {
+                    opt.TokenLifespan = TimeSpan.FromHours(10);
+                }
+                );
 
-            //services.Configure<DataProtectionTokenProviderOptions>(
-            //    opt=>opt.TokenLifespan=TimeSpan.FromHours(10))
-                
-                
-            //    ;
-
-
-
-
+            // 仅更改电子邮件验证令牌类型的有效时间为10秒
+            services.Configure<CustomEmailConfirmationTokenProviderOptions>(opt =>
+            {
+                opt.TokenLifespan = TimeSpan.FromHours(10);
+            }
+                );
 
             services.ConfigureApplicationCookie(options =>
             {
@@ -77,7 +91,13 @@ namespace StudentManagement
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                .AddErrorDescriber<CustomIdentityErrorDescriber>()
-                .AddEntityFrameworkStores<AppDbContext>().AddDefaultTokenProviders();
+                .AddEntityFrameworkStores<AppDbContext>()                
+                .AddDefaultTokenProviders()
+                .AddTokenProvider<CustomEmailConfirmationTokenProvider<ApplicationUser>>("ltmEmailConfirmation")
+                
+                ;
+ 
+
 
             // 策略结合声明授权
             services.AddAuthorization(options =>
@@ -121,6 +141,10 @@ namespace StudentManagement
 
             services.AddSingleton<IAuthorizationHandler, CanEditOnlyOtherAdminRolesAndClaimsHandler>();
             services.AddSingleton<IAuthorizationHandler, SuperAdminHandler>();
+
+           services.AddSingleton<DataProtectionPurposeStrings>();
+
+
 
 
         }
