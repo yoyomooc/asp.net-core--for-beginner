@@ -18,6 +18,17 @@ namespace StudentManagement.RazorPage.Services
             };
         }
 
+        public Student Add(Student newStudent)
+        {
+            newStudent.Id= _studentList.Max(s => s.Id) + 1;
+
+            _studentList.Add(newStudent);
+            return newStudent;
+
+
+        }
+
+       
         public IEnumerable<Student> GetAllStudents()
         {
             return _studentList;

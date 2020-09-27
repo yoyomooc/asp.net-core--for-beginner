@@ -1,97 +1,110 @@
-@page "{id:min(1)}"
+@*当添加一个新学生时，我们不会传递任何ID值。因此，使id路由参数可选。*@
+@page "{id:min(1)?}/{handler?}"
+
 @model StudentManagement.RazorPage.Pages.Students.EditModel
 @{
-    ViewData["Title"] = "编辑";
+     var pageHeader = Model.Student.Id > 0 ? "编辑" : "添加学生";
+    ViewData["Title"] = pageHeader;
     // 如果学生没有照片信息，就默认给他一张空照片
     var photoPath = "~/images/" + (Model.Student.PhotoPath ?? "noimage.png");
 }
 
-<h1>消息通知配置开关</h1>
+<div class="row">
 
-<form method="post" asp-page-handler="UpdateNotificationPreferences">
-    <div class="form-check">
-        <input asp-for="Notify" class="form-check-input" />
-        <label asp-for="Notify" class="form-check-label">
-       允许接收消息通知信息
-        </label>
-    </div>
-    <button type="submit" class="btn btn-primary">
-        更新消息通知
-    </button>
-    @if (!string.IsNullOrEmpty(Model.Message))
-    {
-        <div class="alert alert-primary">
-            @Model.Message
-        </div>
-    }
-</form>
+    <div class="col-md-12">
+        <h1>消息通知配置开关</h1>
 
-<hr />
-
-<h1>编辑学生</h1>
-
-<form method="post" class="mt-3">
-    @*使用隐藏的input标签来存储提交表单时需要的学生id*@
-    <input hidden asp-for="Student.Id" />
-
-    @*asp-for TagHelper 负责在处理在不同的标签中显示现有的数据*@
-    <div class="form-group row">
-        <label asp-for="Student.Name" class="col-sm-2 col-form-label">
-        </label>
-        <div class="col-sm-10">
-            <input asp-for="Student.Name" class="form-control" placeholder="Name">
-        </div>
-    </div>
-    <div class="form-group row">
-        <label asp-for="Student.Email" class="col-sm-2 col-form-label"></label>
-        <div class="col-sm-10">
-            <input asp-for="Student.Email" class="form-control" placeholder="Email">
-        </div>
-    </div>
-
-    <div class="form-group row">
-        <label asp-for="Student.ClassName" class="col-sm-2 col-form-label"></label>
-        <div class="col-sm-10">
-            <select asp-for="Student.ClassName" class="custom-select mr-sm-2"
-                    asp-items="Html.GetEnumSelectList<ClassNameEnum>()">
-                <option value="">请选择</option>
-            </select>
-        </div>
-    </div>
-
-    <div class="form-group row">
-        <label asp-for="Photo" class="col-sm-2 col-form-label"></label>
-        <div class="col-sm-10">
-            <div class="custom-file">
-                @*Photo属性类型是IFormFile，ASP. NET Core会根据这个属性自动创建一个FileUpload控件 *@
-                @* 有关更具体的信息在《深入浅出ASP.NET Core》那本书有介绍 *@
-                <input asp-for="Photo" class="custom-file-input form-control">
-                <label class="custom-file-label">更换图片</label>
+        <form method="post" asp-page-handler="UpdateNotificationPreferences">
+            <div class="form-check">
+                <input asp-for="Notify" class="form-check-input" />
+                <label asp-for="Notify" class="form-check-label">
+                    允许接收消息通知信息
+                </label>
             </div>
-        </div>
+            <button type="submit" class="btn btn-primary">
+                更新消息通知
+            </button>
+
+        </form>
+
+        <hr />
     </div>
 
-    @*显示有照片的学生信息*@
-    <div class="form-group row col-sm-4 offset-4">
-        <img class="imageThumbnail" src="@photoPath" asp-append-version="true" />
+  
+    <div class="col-md-12">
+
+        @*页面状态内容控制*@
+        <h1>@pageHeader</h1>
+
+        <form method="post" class="mt-3">
+            @*使用隐藏的input标签来存储提交表单时需要的学生id*@
+            <input hidden asp-for="Student.Id" />
+            <input hidden asp-for="Student.PhotoPath" />
+
+            <div asp-validation-summary="All" class="text-danger"></div>
+
+            @*asp-for TagHelper 负责在处理在不同的标签中显示现有的数据*@
+            <div class="form-group row">
+                <label asp-for="Student.Name" class="col-sm-2 col-form-label">
+                </label>
+                <div class="col-sm-10">
+                    <input asp-for="Student.Name" class="form-control" placeholder="Name">
+                    <span asp-validation-for="Student.Name" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="Student.Email" class="col-sm-2 col-form-label"></label>
+                <div class="col-sm-10">
+                    <input asp-for="Student.Email" class="form-control" placeholder="Email">
+                    <span asp-validation-for="Student.Email" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label asp-for="Student.ClassName" class="col-sm-2 col-form-label"></label>
+                <div class="col-sm-10">
+                    <select asp-for="Student.ClassName" class="custom-select mr-sm-2"
+                            asp-items="Html.GetEnumSelectList<ClassNameEnum>()">
+                        <option value="">请选择</option>
+                    </select>
+                    <span asp-validation-for="Student.ClassName" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label asp-for="Photo" class="col-sm-2 col-form-label"></label>
+                <div class="col-sm-10">
+                    <div class="custom-file">
+                        @*Photo属性类型是IFormFile，ASP. NET Core会根据这个属性自动创建一个FileUpload控件 *@
+                        @* 有关更具体的信息在《深入浅出ASP.NET Core》那本书有介绍 *@
+                        <input asp-for="Photo" class="custom-file-input form-control">
+                        <label class="custom-file-label">更换图片</label>
+                    </div>
+                </div>
+            </div>
+
+            @*显示有照片的学生信息*@
+            <div class="form-group row col-sm-4 offset-4">
+                <img class="imageThumbnail" src="@photoPath" asp-append-version="true" />
+            </div>
+
+            <div class="form-group row">
+                <div class="col-sm-10">
+                    <button type="submit" class="btn btn-primary">更新</button>
+                    <a asp-page="/Student/Index" class="btn btn-primary">取消</a>
+                </div>
+            </div>
+
+            @section Scripts {
+                <script>
+                    $(document).ready(function () {
+                        $('.custom-file-input').on("change", function () {
+                            var fileName = $(this).val().split("\\").pop();
+                            $(this).next('.custom-file-label').html(fileName);
+                        });
+                    });
+                </script>
+            }
+        </form>
     </div>
-
-    <div class="form-group row">
-        <div class="col-sm-10">
-            <button type="submit" class="btn btn-primary">更新</button>
-            <a asp-page="/Student/Index" class="btn btn-primary">取消</a>
-        </div>
-    </div>
-
-    @section Scripts {
-        <script>
-            $(document).ready(function () {
-                $('.custom-file-input').on("change", function () {
-                    var fileName = $(this).val().split("\\").pop();
-                    $(this).next('.custom-file-label').html(fileName);
-                });
-            });
-        </script>
-    }
-
-</form>
+</div>

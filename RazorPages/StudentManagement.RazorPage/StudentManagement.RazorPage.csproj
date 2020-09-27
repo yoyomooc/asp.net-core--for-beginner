@@ -4,6 +4,8 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+ 
+
   <ItemGroup>
     <ProjectReference Include="..\StudentManagement.RazorPage.Services\StudentManagement.RazorPage.Services.csproj" />
   </ItemGroup>
