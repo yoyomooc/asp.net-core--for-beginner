@@ -1,10 +1,15 @@
-﻿@page
+@page
 @model IndexModel
 @{
     ViewData["Title"] = "Home page";
 }
 
+
+
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
+
+    @await Component.InvokeAsync("HeadCount")
+
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>

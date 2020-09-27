@@ -15,7 +15,11 @@
 </style>
 
 <h1>学生</h1>
-
+ 
+@await Component.InvokeAsync("HeadCount", new
+{
+    className = ClassNameEnum.FirstGrade
+})
 <div class="card-deck">
     @foreach (var student in Model.Students)
     {

@@ -1,0 +1,21 @@
+@model IEnumerable<ClassHeadCount>
+
+<h3>学生人数汇总</h3>
+
+<table class="table table-bordered">
+    <thead class="thead-light">
+        <tr>
+            <th>班级</th>
+            <th>汇总人数</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var deptHeadCount in Model)
+        {
+            <tr>
+                <td>@deptHeadCount.ClassName</td>
+                <td>@deptHeadCount.Count</td>
+            </tr>
+        }
+    </tbody>
+</table>

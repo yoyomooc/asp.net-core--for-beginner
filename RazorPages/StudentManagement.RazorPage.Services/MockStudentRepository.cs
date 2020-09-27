@@ -20,13 +20,12 @@ namespace StudentManagement.RazorPage.Services
 
         public Student Add(Student newStudent)
         {
-            newStudent.Id= _studentList.Max(s => s.Id) + 1;
+            newStudent.Id = _studentList.Max(s => s.Id) + 1;
 
             _studentList.Add(newStudent);
             return newStudent;
-
-
         }
+
         public Student Delete(int id)
         {
             var studentToDelete = _studentList.FirstOrDefault(e => e.Id == id);
@@ -47,6 +46,23 @@ namespace StudentManagement.RazorPage.Services
         public Student GetStudent(int id)
         {
             return _studentList.FirstOrDefault(e => e.Id == id);
+        }
+
+        public IEnumerable<ClassHeadCount> StudentCountByClassNameEnum(ClassNameEnum? className)
+        {
+            IEnumerable<Student> query = _studentList;
+
+            if (className.HasValue)
+            {
+                query = query.Where(e => e.ClassName == className.Value);
+            }
+
+            return query.GroupBy(e => e.ClassName)
+                                 .Select(g => new ClassHeadCount()
+                                 {
+                                     ClassName = g.Key.Value,
+                                     Count = g.Count()
+                                 }).ToList();
         }
 
         public Student Update(Student updatedStudent)

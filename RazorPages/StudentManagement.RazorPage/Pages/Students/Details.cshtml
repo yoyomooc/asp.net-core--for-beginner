@@ -1,5 +1,5 @@
-@page "students/view/{id:even}"
-
+@*@page "students/view/{id:even}"*@
+@page "students/view/{id}"
 @model StudentManagement.RazorPage.Pages.Students.DetailsModel
 @{
     ViewData["Title"] = "学生详情页面";
@@ -8,6 +8,7 @@
 
 <div class="row justify-content-center m-3">
 
+    @await Component.InvokeAsync("HeadCount", new { className = Model.Student.ClassName })
 
 
     <div class="col-sm-8">
@@ -25,17 +26,17 @@
         {
             <div class="col-sm-8">
                 <div class="alert alert-primary">
-        @Model.Message
+                    @Model.Message
                 </div>
             </div>
         }
 
- 
+
         @if (TempData.Peek("message") != null)
         {
             <div class="col-sm-8">
                 <div class="alert alert-primary">
-                    @TempData.Peek("message")                   
+                    @TempData.Peek("message")
 
                 </div>
             </div>
@@ -58,7 +59,7 @@
                 <a asp-page="index"
                    class="btn btn-primary">返回</a>
                 @*<a href="#" class="btn btn-primary">编辑</a>
-                <a href="#" class="btn btn-danger">删除</a>*@
+                    <a href="#" class="btn btn-danger">删除</a>*@
             </div>
         </div>
     </div>
