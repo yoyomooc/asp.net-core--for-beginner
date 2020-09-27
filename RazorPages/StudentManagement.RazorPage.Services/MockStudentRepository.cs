@@ -27,8 +27,18 @@ namespace StudentManagement.RazorPage.Services
 
 
         }
+        public Student Delete(int id)
+        {
+            var studentToDelete = _studentList.FirstOrDefault(e => e.Id == id);
 
-       
+            if (studentToDelete != null)
+            {
+                _studentList.Remove(studentToDelete);
+            }
+
+            return studentToDelete;
+        }
+
         public IEnumerable<Student> GetAllStudents()
         {
             return _studentList;

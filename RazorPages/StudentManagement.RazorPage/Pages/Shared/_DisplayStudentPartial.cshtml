@@ -1,0 +1,30 @@
+@model Student
+@{
+    var photoPath = "~/images/" + (Model.PhotoPath ?? "noimage.png");
+    //“查看”、“编辑”和“删除”按钮不能显示在“删除RazorPage”页面上。
+    //它们应该只显示在Student List razor页面上，这些页面将使用ViewData字典传递true或false
+    bool showButtons = (bool)ViewData["ShowButtons"];
+}
+
+<div class="card m-3" style="min-width: 18rem; max-width:30.5%;">
+    <div class="card-header">
+        <h3>@Model.Name</h3>
+    </div>
+
+    <img class="card-img-top imageThumbnail" src="@photoPath"
+         asp-append-version="true" />
+
+    @if (showButtons)
+    {
+        <div class="card-footer text-center">
+            <a asp-page="/Students/Details" asp-route-ID="@Model.Id"
+               class="btn btn-primary m-1">查看</a>
+
+            <a asp-page="/Students/Edit" asp-route-ID="@Model.Id"
+               class="btn btn-primary m-1">编辑</a>
+
+            <a asp-page="/Students/Delete" asp-route-ID="@Model.Id"
+               class="btn btn-danger m-1">删除</a>
+        </div>
+    }
+</div>

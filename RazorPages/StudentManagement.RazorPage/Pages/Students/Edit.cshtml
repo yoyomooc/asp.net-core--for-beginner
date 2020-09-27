@@ -3,12 +3,13 @@
 
 @model StudentManagement.RazorPage.Pages.Students.EditModel
 @{
-     var pageHeader = Model.Student.Id > 0 ? "编辑" : "添加学生";
+    var pageHeader = Model.Student.Id > 0 ? "编辑" : "添加学生";
     ViewData["Title"] = pageHeader;
     // 如果学生没有照片信息，就默认给他一张空照片
     var photoPath = "~/images/" + (Model.Student.PhotoPath ?? "noimage.png");
 }
 
+ 
 <div class="row">
 
     <div class="col-md-12">
@@ -30,7 +31,7 @@
         <hr />
     </div>
 
-  
+
     <div class="col-md-12">
 
         @*页面状态内容控制*@
@@ -96,6 +97,10 @@
             </div>
 
             @section Scripts {
+                <partial name="_ValidationScriptsPartial" />
+                @*@Html.PartialAsync("_ValidationScriptsPartial")*@
+
+
                 <script>
                     $(document).ready(function () {
                         $('.custom-file-input').on("change", function () {

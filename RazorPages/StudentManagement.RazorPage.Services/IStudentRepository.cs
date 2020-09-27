@@ -12,5 +12,8 @@ namespace StudentManagement.RazorPage.Services
         Student Update(Student updatedStudent);
 
         Student Add(Student newStudent);
+
+        Student Delete(int id);
+
     }
 }

@@ -1,0 +1,31 @@
+@page "{id}"
+@model StudentManagement.RazorPage.Pages.Students.DeleteModel
+@{
+    ViewData["Title"] = "删除";
+    var photoPath = "~/Images/" + (Model.Student.PhotoPath ?? "noimage.png");
+    //使用ViewData传递false 来告诉分部视图隐藏查看编辑和删除按钮
+
+    ViewData["ShowButtons"] = false;
+
+}
+
+<h1>确认删除</h1>
+
+<div class="alert alert-danger">
+    <div class="card m-3" style="min-width: 18rem; max-width:30.5%;">
+        <div class="card-header">
+            <h3>@Model.Student.Name</h3>
+        </div>
+
+        <img class="card-img-top imageThumbnail" src="@photoPath"
+             asp-append-version="true" />
+    </div>
+
+    <div class="alert alert-danger">
+        <h5>确实要删除学生 - @Model.Student.Name  信息吗？</h5>
+        <form method="post">
+            <button type="submit" class="btn btn-danger">确认</button>
+            <a asp-page="/Students/Index" class="btn btn-primary">取消</a>
+        </form>
+    </div>
+</div>

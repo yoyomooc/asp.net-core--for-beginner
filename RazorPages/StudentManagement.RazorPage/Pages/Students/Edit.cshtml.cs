@@ -24,7 +24,7 @@ namespace StudentManagement.RazorPage.Pages.Students
 
         //这是显示模板将用于的属性,显示现有的学生数据
         [BindProperty]
-        public Student Student { get; private set; }
+        public Student Student { get;    set; }
 
         // 我们使用这个属性来存储和处理新上传的照片
         [BindProperty]

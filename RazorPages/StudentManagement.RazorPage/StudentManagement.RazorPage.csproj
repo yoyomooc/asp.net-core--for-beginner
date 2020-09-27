@@ -1,10 +1,12 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
- 
+	<ItemGroup>
+		<!--<PackageReference Include="Microsoft.AspNetCore.Mvc.DataAnnotations" Version="2.2.0" />-->
+	</ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\StudentManagement.RazorPage.Services\StudentManagement.RazorPage.Services.csproj" />
