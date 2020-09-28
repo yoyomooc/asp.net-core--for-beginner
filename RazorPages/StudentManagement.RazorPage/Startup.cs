@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -20,8 +21,11 @@ namespace StudentManagement.RazorPage
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContextPool<AppDbContext>(options =>
+options.UseSqlServer(Configuration.GetConnectionString("StudentDBConnection")));
+
             services.AddRazorPages();
-            services.AddSingleton<IStudentRepository, MockStudentRepository>();
+            services.AddScoped<IStudentRepository, SQLStudentRepository>();
 
             services.Configure<RouteOptions>(options =>
             {
@@ -32,8 +36,7 @@ namespace StudentManagement.RazorPage
                 options.LowercaseQueryStrings = true;
                 //  在生成的URL后面附加一个斜杠
                 options.AppendTrailingSlash = true;
-                        options.ConstraintMap.Add("even", typeof(EvenConstraint));
-
+                options.ConstraintMap.Add("even", typeof(EvenConstraint));
             });
         }
 

@@ -4,6 +4,10 @@
     ViewData["Title"] = "Privacy Policy";
 }
 <h1>@ViewData["Title"]</h1>
+
+
 @await Component.InvokeAsync("HeadCount", null)
+@*<vc:head-count class-name="null"></vc:head-count>*@
+@*<vc:head-count class-name="ClassNameEnum.FirstGrade"></vc:head-count>*@
 
 <p>Use this page to detail your site's privacy policy.</p>

@@ -78,5 +78,16 @@ namespace StudentManagement.RazorPage.Services
             }
             return student;
         }
+
+        public IEnumerable<Student> Search(string searchTerm = null)
+        {
+            if (string.IsNullOrEmpty(searchTerm))
+            {
+                return _studentList;
+            }
+
+            return _studentList.Where(e => e.Name.Contains(searchTerm) ||
+                                            e.Email.Contains(searchTerm)).ToList();
+        }
     }
 }

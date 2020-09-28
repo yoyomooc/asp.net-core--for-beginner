@@ -6,61 +6,62 @@
     var photoPath = "~/Images/" + (Model.Student.PhotoPath ?? "noimage.png");
 }
 
-<div class="row justify-content-center m-3">
+    <div class="row justify-content-center m-3">
 
-    @await Component.InvokeAsync("HeadCount", new { className = Model.Student.ClassName })
+        @await Component.InvokeAsync("HeadCount", new { className = Model.Student.ClassName })
 
+        <vc:head-count class-name="Model.Student.ClassName"></vc:head-count>
 
-    <div class="col-sm-8">
+        <div class="col-sm-8">
 
-        @if (TempData["message"] != null)
-        {
-            <div class="col-sm-8">
-                <div class="alert alert-primary">
-                    @TempData["message"]
+            @if (TempData["message"] != null)
+            {
+                <div class="col-sm-8">
+                    <div class="alert alert-primary">
+                        @TempData["message"]
+                    </div>
                 </div>
-            </div>
-        }
+            }
 
-        @if (Model.Message != null)
-        {
-            <div class="col-sm-8">
-                <div class="alert alert-primary">
-                    @Model.Message
+            @if (Model.Message != null)
+            {
+                <div class="col-sm-8">
+                    <div class="alert alert-primary">
+                        @Model.Message
+                    </div>
                 </div>
-            </div>
-        }
+            }
 
 
-        @if (TempData.Peek("message") != null)
-        {
-            <div class="col-sm-8">
-                <div class="alert alert-primary">
-                    @TempData.Peek("message")
+            @if (TempData.Peek("message") != null)
+            {
+                <div class="col-sm-8">
+                    <div class="alert alert-primary">
+                        @TempData.Peek("message")
+
+                    </div>
+                </div>
+            }
+
+            <div class="card">
+                <div class="card-header">
+                    <h1>@Model.Student.Name</h1>
+                </div>
+
+                <div class="card-body text-center">
+                    <img class="card-img-top" src="@photoPath" asp-append-version="true" style="width:50%" />
+
+                    <h4>Student ID : @Model.Student.Id</h4>
+                    <h4>邮箱地址 : @Model.Student.Email</h4>
+                    <h4>班级 : @Model.Student.ClassName</h4>
 
                 </div>
-            </div>
-        }
-
-        <div class="card">
-            <div class="card-header">
-                <h1>@Model.Student.Name</h1>
-            </div>
-
-            <div class="card-body text-center">
-                <img class="card-img-top" src="@photoPath" asp-append-version="true" style="width:50%" />
-
-                <h4>Student ID : @Model.Student.Id</h4>
-                <h4>邮箱地址 : @Model.Student.Email</h4>
-                <h4>班级 : @Model.Student.ClassName</h4>
-
-            </div>
-            <div class="card-footer text-center">
-                <a asp-page="index"
-                   class="btn btn-primary">返回</a>
-                @*<a href="#" class="btn btn-primary">编辑</a>
+                <div class="card-footer text-center">
+                    <a asp-page="index"
+                       class="btn btn-primary">返回</a>
+                    @*<a href="#" class="btn btn-primary">编辑</a>
                     <a href="#" class="btn btn-danger">删除</a>*@
+                </div>
             </div>
         </div>
     </div>
-</div>

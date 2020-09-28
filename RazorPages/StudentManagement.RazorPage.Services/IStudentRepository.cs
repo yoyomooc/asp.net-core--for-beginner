@@ -16,5 +16,10 @@ namespace StudentManagement.RazorPage.Services
         Student Delete(int id);
 
         IEnumerable<ClassHeadCount> StudentCountByClassNameEnum(ClassNameEnum? className);
+
+
+            IEnumerable<Student> Search(string searchTerm);
+
+
     }
 }

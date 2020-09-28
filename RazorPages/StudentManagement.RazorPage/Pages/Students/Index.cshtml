@@ -14,12 +14,19 @@
     }
 </style>
 
-<h1>学生</h1>
- 
-@await Component.InvokeAsync("HeadCount", new
-{
-    className = ClassNameEnum.FirstGrade
-})
+<h1>学生列表</h1>
+
+@await Component.InvokeAsync("HeadCount")
+
+<form method="get">
+    <div class="input-group">
+        <input class="form-control" asp-for="SearchTerm">
+        <div class="input-group-append">
+            <button class="btn btn-primary" type="submit">搜索</button>
+        </div>
+    </div>
+</form>
+
 <div class="card-deck">
     @foreach (var student in Model.Students)
     {
