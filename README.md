@@ -1,5 +1,6 @@
 
 # 《深入浅出ASP.NET Core》 ASP.NET Core 3.1 配套视频食用更加
+# "Introduction to ASP.NET Core" ASP.NET Core 3.1 supporting video is more edible
 
 [第一本基于ASP.NET Core 3.1的实战来了
 ](https://mp.weixin.qq.com/s?__biz=MzI1OTQzNTc0MQ==&mid=2247484497&idx=1&sn=05bc0332137e05d2a3e07b099d18bea5&chksm=ea79b9e3dd0e30f541c54b355a4da9e7e2e4a669873551eb160d157707010057a71fc8836399&token=82079775&lang=zh_CN#rd)
@@ -15,21 +16,28 @@
 
 销售地址：[深入浅出 ASP.NET Core](https://item.jd.com/12720785.html)
 
+Sales address: [Explain in simple language ASP.NET Core](https://item.jd.com/12720785.html)
+
 
  
 
 实际仓库地址：http://code.52abp.com/yoyomooc/asp.net-core-mvc-2019
+Actual warehouse address: http://code.52abp.com/yoyomooc/asp.net-core-mvc-2019
 
 ### 镜像地址
-
+### Mirror address
 
 （国内加速码云）Gitee地址： https://gitee.com/aiabpedu/asp.net-core-mvc-2019
+ (Domestic acceleration code cloud) Gitee address: https://gitee.com/aiabpedu/asp.net-core-mvc-2019
 
 Github地址：https://github.com/yoyomooc/asp.net-core--for-beginner
 
 # 前言
-
+# Preface
 本仓库为课程：[https://www.52abp.com/College](https://www.52abp.com/College) 里面的配套视频代码
+//This warehouse is a course: [https://www.52abp.com/College](https://www.52abp.com/College) The supporting video code inside
+
+
 
  
 在本课程中，我们将学习从入门最基本的命令，到中级和高级的 ASP.NET Core 概念，也将从零开始创建一个 ASP.NET Core 项目。
