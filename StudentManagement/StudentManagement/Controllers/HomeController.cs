@@ -1,7 +1,8 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.DataProtection;
-using Microsoft.AspNetCore.Hosting.Internal;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Hosting.Internal;
 using Microsoft.Extensions.Logging;
 using StudentManagement.Models;
 using StudentManagement.Security.CustomTokenProvider;
@@ -18,13 +19,13 @@ namespace StudentManagement.Controllers
     public class HomeController : Controller
     {
         private readonly IStudentRepository _studentRepository;
-        private readonly HostingEnvironment hostingEnvironment;
+        private readonly IWebHostEnvironment hostingEnvironment;
         private readonly ILogger logger;
 
         private readonly IDataProtector dataProtector;
 
         //使用构造函数注入的方式注入IStudentRepository
-        public HomeController(IStudentRepository studentRepository, HostingEnvironment hostingEnvironment,
+        public HomeController(IStudentRepository studentRepository, IWebHostEnvironment hostingEnvironment,
             ILogger<HomeController> logger,DataProtectionPurposeStrings dataProtectionPurposeStrings,IDataProtectionProvider dataProtectionProvider)
         {
             _studentRepository = studentRepository;

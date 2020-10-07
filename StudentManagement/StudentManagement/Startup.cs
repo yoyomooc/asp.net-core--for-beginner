@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using StudentManagement.Data;
 using StudentManagement.Middlewares;
 using StudentManagement.Models;
@@ -36,8 +37,6 @@ namespace StudentManagement
                 options => options.UseSqlServer(_configuration.GetConnectionString("StudentDBConnection"))
                 );
 
-         
-
             services.Configure<IdentityOptions>(options =>
             {
                 options.Password.RequiredLength = 6;
@@ -56,7 +55,6 @@ namespace StudentManagement
                 //默认锁定时间为 15 分钟。
                 options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
             });
-
 
             /// 修改所有令牌类型的有效时间为10个小时
             services.Configure<DataProtectionTokenProviderOptions>(
@@ -91,13 +89,11 @@ namespace StudentManagement
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                .AddErrorDescriber<CustomIdentityErrorDescriber>()
-                .AddEntityFrameworkStores<AppDbContext>()                
+                .AddEntityFrameworkStores<AppDbContext>()
                 .AddDefaultTokenProviders()
                 .AddTokenProvider<CustomEmailConfirmationTokenProvider<ApplicationUser>>("ltmEmailConfirmation")
-                
-                ;
- 
 
+                ;
 
             // 策略结合声明授权
             services.AddAuthorization(options =>
@@ -118,8 +114,6 @@ namespace StudentManagement
                 options.InvokeHandlersAfterFailure = false;
             });
 
-
-
             services.AddAuthentication().AddMicrosoftAccount(opt =>
             {
                 opt.ClientId = _configuration["Authentication:Microsoft:ClientId"];
@@ -130,8 +124,7 @@ namespace StudentManagement
                 options.ClientSecret = _configuration["Authentication:Github:ClientSecret"];
             });
 
-
-            services.AddMvc(config =>
+            services.AddControllersWithViews(config =>
             {
                 var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
                 config.Filters.Add(new AuthorizeFilter(policy));
@@ -142,15 +135,11 @@ namespace StudentManagement
             services.AddSingleton<IAuthorizationHandler, CanEditOnlyOtherAdminRolesAndClaimsHandler>();
             services.AddSingleton<IAuthorizationHandler, SuperAdminHandler>();
 
-           services.AddSingleton<DataProtectionPurposeStrings>();
-
-
-
-
+            services.AddSingleton<DataProtectionPurposeStrings>();
         }
 
         // This method gets called by the runtim0e. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             //如果环境是 Development，调用 Developer Exception Page
             if (env.IsDevelopment())
@@ -165,17 +154,28 @@ namespace StudentManagement
 
             app.UseStaticFiles();
 
+            //身份认证中间件
             app.UseAuthentication();
+
+            app.UseRouting();
+
+
+            //身份认证(authentication)和授权(authorization)
+
+            app.UseAuthorization();
+
+           
 
             app.UseDataInitializer();
 
-            app.UseMvc(routes =>
+            // UseEndpoints 是一个可以处理跨不同中间件系统（如MVC、 Razor Pages、 Blazor、 SignalR和gRPC） 的路由系统。通过终结点路由可以使端点相互协作，并使系统比没有相互对话的终端中间件更全面。当然本书暂时不会涉及Razor Pages、 Blazor、 SignalR和gRPC，但是为了项目的长远规划,dotnet开发团队推荐使用终结点路由。
+
+            app.UseEndpoints(routes =>
             {
-                routes.MapRoute("default", "{controller=Home}/{action=Index}/{id?}");
+                routes.MapControllerRoute("default",
+                   pattern: "{controller=Home}/{action=Index}/{id?}");
             });
         }
-
-
 
         //授权访问
         private bool AuthorizeAccess(AuthorizationHandlerContext context)
@@ -184,6 +184,5 @@ namespace StudentManagement
                     context.User.HasClaim(claim => claim.Type == "Edit Role" && claim.Value == "true") ||
                     context.User.IsInRole("Super Admin");
         }
-
     }
 }

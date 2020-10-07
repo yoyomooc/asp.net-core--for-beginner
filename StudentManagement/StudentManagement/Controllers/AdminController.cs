@@ -373,7 +373,7 @@ namespace StudentManagement.Controllers
         #region 管理用户中的角色
 
         [HttpGet]
-        [Authorize(Policy = "EditRolePolicy")]
+        //[Authorize(Policy = "EditRolePolicy")]
         public async Task<IActionResult> ManageUserRoles(string userId)
         {
             ViewBag.userId = userId;
@@ -387,7 +387,7 @@ namespace StudentManagement.Controllers
 
             var model = new List<RolesInUserViewModel>();
 
-            var roles = await roleManager.Roles.ToListAsync();
+            var roles =  await roleManager.Roles.ToListAsync();
             foreach (var role in roles)
             {
                 var rolesInUserViewModel = new RolesInUserViewModel
